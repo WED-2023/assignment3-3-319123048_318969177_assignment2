@@ -13,10 +13,17 @@
         <label>Password:</label>
         <input v-model="state.password" type="password" class="form-control" />
         <div v-if="v$.password.$error" class="text-danger">
-          Password is required (at least 6 characters).
+          Password is required.
         </div>
       </div>
       <button type="submit" class="btn btn-primary mt-3">Login</button>
+      <div>
+        <br/>
+        <p>Don't have an account?</p>
+        <router-link :to="{ name: 'register' }">
+          <button class="btn btn-outline-primary">Register</button>
+        </router-link>
+      </div>
     </form>
   </div>
 </template>

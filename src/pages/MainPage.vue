@@ -7,7 +7,7 @@
       <div class="col-md-6 mb-4">
         <h3>Explore these recipes:</h3>
         <RecipePreviewList title="" ref="randomList" />
-        <button @click="refreshRandomRecipes" class="btn btn-primary mt-3">Show More Recipes</button>
+        <button @click="refreshRandomRecipes" class="btn btn-primary mt-3">Get more recipes</button>
       </div>
 
       <!-- For logged in Users - Laste Watched Recipes -->
@@ -22,12 +22,7 @@
           <p>You must log in to view your recent recipes.</p>
           <div class="card p-3">
             <LoginPage />
-            <div class="text-center mt-3">
-              <p>Don't have an account?</p>
-              <router-link :to="{ name: 'register' }">
-                <button class="btn btn-outline-primary">Register</button>
-              </router-link>
-            </div>
+
           </div>
         </template>
       </div>
