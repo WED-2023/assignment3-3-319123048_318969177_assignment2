@@ -1,200 +1,269 @@
 <template>
-  <div class="register-page">
-    <h1>Register</h1>
+  <div class="register-page container">
+    <h1 class="mb-4">Register</h1>
     <form @submit.prevent="register">
+      <!-- Username -->
       <div class="form-group">
-        <label>Username:</label>
-        <input v-model="state.username" type="text" class="form-control" />
-        <div v-if="v$.username.$error" class="text-danger">
-          Username must be 3–8 letters only.
-        </div>
+        <label for="username">Username</label>
+        <input
+          id="username"
+          v-model="form.username"
+          @input="v$.form.username.$touch()"
+          :class="['form-control', validationState('username')]"
+        />
+        <template v-if="v$.form.username.$dirty && v$.form.username.$errors.length">
+          <small v-for="err in v$.form.username.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
 
+      <!-- First Name -->
       <div class="form-group">
-        <label>First Name:</label>
-        <input v-model="state.firstName" type="text" class="form-control" />
-        <div v-if="v$.firstName.$error" class="text-danger">
-          First name is required.
-        </div>
+        <label for="firstName">First Name</label>
+        <input
+          id="firstName"
+          v-model="form.firstName"
+          @input="v$.form.firstName.$touch()"
+          :class="['form-control', validationState('firstName')]"
+        />
+        <template v-if="v$.form.firstName.$dirty && v$.form.firstName.$errors.length">
+          <small v-for="err in v$.form.firstName.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
 
+      <!-- Last Name -->
       <div class="form-group">
-        <label>Last Name:</label>
-        <input v-model="state.lastName" type="text" class="form-control" />
-        <div v-if="v$.lastName.$error" class="text-danger">
-          Last name is required.
-        </div>
+        <label for="lastName">Last Name</label>
+        <input
+          id="lastName"
+          v-model="form.lastName"
+          @input="v$.form.lastName.$touch()"
+          :class="['form-control', validationState('lastName')]"
+        />
+        <template v-if="v$.form.lastName.$dirty && v$.form.lastName.$errors.length">
+          <small v-for="err in v$.form.lastName.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
 
+      <!-- Country -->
       <div class="form-group">
-        <label>Country:</label>
-        <select v-model="state.country" class="form-control">
+        <label for="country">Country</label>
+        <select
+          id="country"
+          v-model="form.country"
+          @change="v$.form.country.$touch()"
+          :class="['form-control', validationState('country')]"
+        >
           <option disabled value="">Select a country</option>
           <option v-for="c in countries" :key="c" :value="c">{{ c }}</option>
         </select>
-        <div v-if="v$.country.$error" class="text-danger">
-          Country is required.
-        </div>
+        <template v-if="v$.form.country.$dirty && v$.form.country.$errors.length">
+          <small v-for="err in v$.form.country.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
 
+      <!-- Email -->
       <div class="form-group">
-        <label>Email:</label>
-        <input v-model="state.email" type="email" class="form-control" />
-        <div v-if="v$.email.$error" class="text-danger">
-          Valid email is required.
-        </div>
+        <label for="email">Email</label>
+        <input
+          id="email"
+          v-model="form.email"
+          @input="v$.form.email.$touch()"
+          :class="['form-control', validationState('email')]"
+        />
+        <template v-if="v$.form.email.$dirty && v$.form.email.$errors.length">
+          <small v-for="err in v$.form.email.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
 
+      <!-- Password -->
       <div class="form-group">
-        <label>Password:</label>
-        <div class="input-group">
-          <input
-            :type="state.showPassword ? 'text' : 'password'"
-            v-model="state.password"
-            class="form-control"
-          />
-          <button type="button" class="btn btn-outline-secondary" @click="state.showPassword = !state.showPassword">
-            {{ state.showPassword ? 'Hide' : 'Show' }}
-          </button>
+        <label for="password">Password</label>
+        <input
+          id="password"
+          :type="showPassword ? 'text' : 'password'"
+          v-model="form.password"
+          @input="v$.form.password.$touch()"
+          :class="['form-control', validationState('password')]"
+        />
+        <div>
+          <input type="checkbox" v-model="showPassword" /> Show password
         </div>
-        <div v-if="v$.password.$error" class="text-danger">
-          Password must be 5–10 characters, include a number and special char.
-        </div>
+        <template v-if="v$.form.password.$dirty && v$.form.password.$errors.length">
+          <small v-for="err in v$.form.password.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
 
+      <!-- Confirm Password -->
       <div class="form-group">
-        <label>Confirm Password:</label>
-        <div class="input-group">
-          <input
-            :type="state.showConfirmPassword ? 'text' : 'password'"
-            v-model="state.confirmPassword"
-            class="form-control"
-          />
-          <button type="button" class="btn btn-outline-secondary" @click="state.showConfirmPassword = !state.showConfirmPassword">
-            {{ state.showConfirmPassword ? 'Hide' : 'Show' }}
-          </button>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          :type="showConfirmPassword ? 'text' : 'password'"
+          v-model="form.confirmPassword"
+          @input="v$.form.confirmPassword.$touch()"
+          :class="['form-control', validationState('confirmPassword')]"
+        />
+        <div>
+          <input type="checkbox" v-model="showConfirmPassword" /> Show confirm password
         </div>
-        <div v-if="v$.confirmPassword.$error" class="text-danger">
-          Passwords must match.
-        </div>
+        <template v-if="v$.form.confirmPassword.$dirty && v$.form.confirmPassword.$errors.length">
+          <small v-for="err in v$.form.confirmPassword.$errors" :key="err.$uid" class="text-danger">
+            {{ err.$message }}
+          </small>
+        </template>
       </div>
-     <button
-        type="submit"
-        class="btn btn-success mt-3"
-        :disabled="!isFormComplete"
-      >
+
+      <button type="submit" class="btn btn-success mt-3" :disabled="v$.form.$invalid">
         Register
       </button>
     </form>
   </div>
 </template>
 
-
 <script>
-import { reactive, ref, onMounted } from 'vue';
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useVuelidate } from '@vuelidate/core';
+import { reactive, ref, onMounted, computed  } from 'vue';
+import useVuelidate from '@vuelidate/core';
 import {
   required,
   minLength,
   maxLength,
-  helpers,
   email,
   sameAs,
+  helpers,
+  alpha
 } from '@vuelidate/validators';
+import axios from 'axios';
 
 export default {
-  name: "RegisterPage",
-  setup(_, { expose }) {
-    const state = reactive({
+  setup() {
+    const form = reactive({
       username: '',
       firstName: '',
       lastName: '',
       country: '',
       email: '',
       password: '',
-      confirmPassword: '',
-      showPassword: false,
-      showConfirmPassword: false,
+      confirmPassword: ''
     });
 
-    const router = useRouter();
+    const showPassword = ref(false);
+    const showConfirmPassword = ref(false);
     const countries = ref([]);
-
-    const isLettersOnly = helpers.regex(/^[A-Za-z]{3,8}$/);
-    const isStrongPassword = helpers.regex(/^(?=.*[0-9])(?=.*[\W_]).{5,10}$/);
+    const passwordValue = computed(() => form.password);
 
     const rules = {
-      username: { required, isLettersOnly, minLength: minLength(3), maxLength: maxLength(8) },
-      firstName: { required },
-      lastName: { required },
-      country: { required },
-      email: { required, email },
-      password: { required, isStrongPassword, minLength: minLength(5), maxLength: maxLength(10) },
-      confirmPassword: {
-        required,
-        sameAsPassword: sameAs(() => state.password),
-      },
-    };
-
-    const v$ = useVuelidate(rules, state);
-    const isFormComplete = computed(() => {
-      return (
-        state.username &&
-        state.firstName &&
-        state.lastName &&
-        state.country &&
-        state.email &&
-        state.password &&
-        state.confirmPassword
-      );
-    });
-    const register = async () => {
-      if (await v$.value.$validate()) {
-        try {
-          await window.axios.post('/api/auth/register', {
-            username: state.username,
-            firstName: state.firstName,
-            lastName: state.lastName,
-            country: state.country,
-            email: state.email,
-            password: state.password
-          });
-          window.toast("Registration Successful", "You can now login", "success");
-          router.push('/login');
-        } catch (err) {
-          window.toast("Registration failed", err.response.data.message || "Try a different username", "danger");
+      form: {
+        username: {
+          required: helpers.withMessage("Username is required", required),
+          minLength: helpers.withMessage("Minimum 3 characters", minLength(3)),
+          maxLength: helpers.withMessage("Maximum 8 characters", maxLength(8)),
+          alpha: helpers.withMessage("Letters only", alpha)
+        },
+        firstName: {
+          required: helpers.withMessage("First name is required", required)
+        },
+        lastName: {
+          required: helpers.withMessage("Last name is required", required)
+        },
+        country: {
+          required: helpers.withMessage("Country is required", required)
+        },
+        email: {
+          required: helpers.withMessage("Email is required", required),
+          email: helpers.withMessage("Must be a valid email", email)
+        },
+        password: {
+          required: helpers.withMessage("Password is required", required),
+          minLength: helpers.withMessage("Minimum 5 characters", minLength(5)),
+          maxLength: helpers.withMessage("Maximum 10 characters", maxLength(10)),
+          strong: helpers.withMessage("Must contain number & special character", helpers.regex(/^(?=.*[0-9])(?=.*[\W_]).+$/))
+        },
+        confirmPassword: {
+          required: helpers.withMessage("Confirmation is required", required),
+          sameAsPassword: helpers.withMessage("Passwords do not match", sameAs(passwordValue))
         }
       }
+    };
+
+    const v$ = useVuelidate(rules, { form });
+
+    const validationState = (field) => {
+      const control = v$.value.form[field];
+      if (control.$dirty) {
+        return control.$errors.length > 0 ? 'is-invalid' : 'is-valid';
+      }
+      return '';
     };
 
     const fetchCountries = async () => {
       try {
         const res = await fetch('https://restcountries.com/v3.1/all?fields=name');
         const data = await res.json();
-
-        if (Array.isArray(data)) {
-          countries.value = data.map(c => c.name.common).sort();
-        } else {
-          console.error('Country API did not return an array:', data);
-        }
+        countries.value = data.map(c => c.name.common).sort();
       } catch (err) {
-        console.error('Failed to fetch countries:', err);
+        console.error("Failed to fetch countries:", err);
+      }
+    };
+
+    const register = async () => {
+      v$.value.form.$touch();
+      if (!v$.value.form.$invalid) {
+        try {
+          await axios.post(import.meta.env.server_domain + '/api/auth/register', {
+            username: form.username,
+            firstName: form.firstName,
+            lastName: form.lastName,
+            country: form.country,
+            email: form.email,
+            password: form.password
+          });
+          window.toast("Success", "You can now login", "success");
+          window.router.push('/login');
+        } catch (err) {
+          const serverMessage = err.response?.data?.message || "Try again";
+
+          if (err.response?.status === 409 && serverMessage === "Username already exists") {
+            window.toast("Registration failed", serverMessage, "danger");
+
+            form.username = "";
+            v$.value.form.username.$reset();
+          } else {
+            window.toast("Registration failed", serverMessage, "danger");
+          }
+        }
       }
     };
 
     onMounted(fetchCountries);
 
-    expose({ register });
-    return { state, v$, register, countries, isFormComplete };
+    return {
+      form,
+      countries,
+      showPassword,
+      showConfirmPassword,
+      v$,
+      register,
+      validationState
+    };
   }
 };
 </script>
 
 <style scoped>
 .register-page {
-  max-width: 500px;
+  max-width: 600px;
   margin: auto;
 }
 </style>

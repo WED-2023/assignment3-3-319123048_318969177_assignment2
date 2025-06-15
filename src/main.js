@@ -1,9 +1,13 @@
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import routes from './router/index';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { createRouter, createWebHistory } from 'vue-router';
+
+
+import Vuelidate from '@vuelidate/core';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
@@ -17,8 +21,10 @@ const router = createRouter({
 
 const app = createApp(App);
 
+
 app.use(router);
 app.use(VueAxios, axios);
+app.use(Vuelidate); 
 
 app.config.globalProperties.store = store;
 
