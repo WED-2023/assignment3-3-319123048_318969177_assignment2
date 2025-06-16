@@ -19,7 +19,6 @@
         <!-- For other Users - login page -->
         <template v-else>
           <h3>Welcome!</h3>
-          <p>You must log in to view your recent recipes.</p>
           <div class="card p-3">
             <LoginPage />
 
@@ -33,17 +32,16 @@
 
 
 <script>
-import { getCurrentInstance, ref, onMounted  } from 'vue';
+import { ref, onMounted  } from 'vue';
 import RecipePreviewList from "../components/RecipePreviewList.vue";
 import LoginPage from "../pages/LoginPage.vue";
+import store from "../store";
 export default {
   components: {
     LoginPage,
     RecipePreviewList
   },
   setup() {
-    const internalInstance = getCurrentInstance();
-    const store = internalInstance.appContext.config.globalProperties.store;
 
     // Static data for now
     const watchedRecipes = ref([

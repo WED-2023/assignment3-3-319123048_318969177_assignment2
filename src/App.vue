@@ -6,7 +6,7 @@
 
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
+            
             <!-- Tabs for all users -->
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'search' }">Search</router-link>
@@ -27,10 +27,6 @@
 
             <!-- Tabs for logged-in users -->
             <template v-else>
-              <li class="nav-item">
-                <span class="nav-link">Hello, {{ store.username }}</span>
-              </li>
-
               <!-- Dropdown Menu for pesonal tabs -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -49,7 +45,7 @@
               </li>
 
               <li class="nav-item">
-                <button @click="logout" class="btn btn-outline-danger btn-sm ms-2">Logout</button>
+                <button @click="logout" class="btn btn-primary mt-3">Logout</button>
               </li>
             </template>
 
@@ -72,19 +68,16 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue';
 
+import { useRouter } from 'vue-router';
+import store from './store';
 export default {
   name: "App",
   setup() {
-    const internalInstance = getCurrentInstance();
-    const store = internalInstance.appContext.config.globalProperties.store;
-    const toast = internalInstance.appContext.config.globalProperties.toast;
-    const router = internalInstance.appContext.config.globalProperties.$router;
 
+    const router = useRouter();
     const logout = () => {
       store.logout();
-      toast("Logout", "User logged out successfully", "success");
       router.push("/").catch(() => {});
     };
 

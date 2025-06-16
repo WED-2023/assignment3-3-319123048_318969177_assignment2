@@ -134,7 +134,9 @@
 
 <script>
 import { reactive, ref, onMounted, computed  } from 'vue';
+import { useRouter } from 'vue-router';
 import useVuelidate from '@vuelidate/core';
+import store from '../store';
 import {
   required,
   minLength,
@@ -162,7 +164,7 @@ export default {
     const showConfirmPassword = ref(false);
     const countries = ref([]);
     const passwordValue = computed(() => form.password);
-
+    const router = useRouter();
     const rules = {
       form: {
         username: {
@@ -221,7 +223,7 @@ export default {
       v$.value.form.$touch();
       if (!v$.value.form.$invalid) {
         try {
-          await axios.post(import.meta.env.server_domain + '/api/auth/register', {
+          await axios.post(`${store.server_domain}/api/auth/register`, {
             username: form.username,
             firstName: form.firstName,
             lastName: form.lastName,
@@ -229,18 +231,16 @@ export default {
             email: form.email,
             password: form.password
           });
-          window.toast("Success", "You can now login", "success");
-          window.router.push('/login');
+          router.push('/login');
         } catch (err) {
           const serverMessage = err.response?.data?.message || "Try again";
 
-          if (err.response?.status === 409 && serverMessage === "Username already exists") {
-            window.toast("Registration failed", serverMessage, "danger");
-
+          if (err.response?.status === 409 && serverMessage === "Username already exists") {  
+            alert("Registration failed: Username already exists");
             form.username = "";
             v$.value.form.username.$reset();
           } else {
-            window.toast("Registration failed", serverMessage, "danger");
+            alert("Registration failed", serverMessage, "danger");
           }
         }
       }

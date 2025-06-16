@@ -23,11 +23,14 @@
         <label for="password">Password</label>
         <input
           id="password"
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           v-model="form.password"
           @input="v$.form.password.$touch()"
           :class="['form-control', validationState('password')]"
         />
+        <div>
+          <input type="checkbox" v-model="showPassword" /> Show Password
+        </div>
         <template v-if="v$.form.password.$dirty && v$.form.password.$errors.length">
           <small v-for="err in v$.form.password.$errors" :key="err.$uid" class="text-danger">
             {{ err.$message }}
@@ -35,24 +38,39 @@
         </template>
       </div>
 
+      <!-- Error Message -->
+      <div v-if="loginError" class="alert alert-danger mt-2">
+        One or more fields are incorrect. Please try again.
+      </div>
+
       <button type="submit" class="btn btn-primary mt-3" :disabled="v$.form.$invalid">
         Login
       </button>
     </form>
+
+    <!-- Register Prompt -->
+    <div class="mt-4 text-start">
+      <p> Don't have an account yet ?</p>
+      <router-link to="/register" class="btn btn-primary mt-3">
+        Register
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, ref  } from 'vue';
 import { useRouter } from 'vue-router';
 import useVuelidate from '@vuelidate/core';
+import store from '../store';
 import { required, minLength, helpers } from '@vuelidate/validators';
 import axios from 'axios';
 
 export default {
   setup() {
     const router = useRouter();
-
+    const loginError = ref(false);
+    const showPassword = ref(false);
     const form = reactive({
       username: '',
       password: ''
@@ -85,17 +103,17 @@ export default {
       v$.value.form.$touch();
       if (!v$.value.form.$invalid) {
         try {
-          await axios.post(import.meta.env.server_domain + '/api/auth/login', {
+          await axios.post(`${store.server_domain}/api/auth/login`, {
             username: form.username,
             password: form.password
           });
-
-          window.toast("Welcome!", "Login successful", "success");
-
-          router.push('/main');
+          store.login(form.username);
+          
+        router.push('/');
         } catch (err) {
+          loginError.value = true;
           const message = err.response?.data?.message || "Login failed";
-          window.toast("Login failed", message, "danger");
+          alert("Login failed: One or more fields are incorrect", message, "danger");
           form.password = "";
           v$.value.form.password.$reset();
         }
@@ -106,7 +124,9 @@ export default {
       form,
       v$,
       validationState,
-      login
+      login,
+      showPassword,
+      loginError,
     };
   }
 };
