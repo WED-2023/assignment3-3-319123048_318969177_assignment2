@@ -8,6 +8,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Bootstrap CSS + JS
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // BootstrapVue 3
 import BootstrapVue3 from 'bootstrap-vue-3';

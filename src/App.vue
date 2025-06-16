@@ -27,16 +27,27 @@
 
             <!-- Tabs for logged-in users -->
             <template v-else>
-              <!-- Dropdown Menu for pesonal tabs -->
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   Personal
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                  <li><router-link class="dropdown-item" :to="{ name: 'favorites' }">My Favorite Recipes</router-link></li>
-                  <li><router-link class="dropdown-item" :to="{ name: 'myRecipes' }">My Recipes</router-link></li>
-                  <li><router-link class="dropdown-item" :to="{ name: 'familyRecipes' }">My Family Recipes</router-link></li>
+                  <li>
+                    <router-link class="dropdown-item" :to="{ name: 'favorites' }">My Favorite Recipes</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" :to="{ name: 'myRecipes' }">My Recipes</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" :to="{ name: 'familyRecipes' }">My Family Recipes</router-link>
+                  </li>
                 </ul>
               </li>
 

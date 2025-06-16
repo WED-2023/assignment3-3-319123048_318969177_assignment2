@@ -13,9 +13,12 @@
       <!-- For logged in Users - Laste Watched Recipes -->
       <div class="col-md-6 mb-4">
         <template v-if="store.username">
-          <h3>Last Watched Recipes</h3>
-          <RecipePreviewList title="" :recipes="watchedRecipes" />
+          <div class="card shadow-sm p-3">
+            <h3 class="card-title">Last Watched Recipes</h3>
+            <RecipePreviewList title="" :recipes="watchedRecipes" />
+          </div>
         </template>
+
         <!-- For other Users - login page -->
         <template v-else>
           <h3>Welcome!</h3>
@@ -42,37 +45,10 @@ export default {
     RecipePreviewList
   },
   setup() {
-
-    // Static data for now
-    const watchedRecipes = ref([
-      {
-        id: 1,
-        title: "Shakshuka",
-        image: "https://example.com/shakshuka.jpg",
-        readyInMinutes: 30,
-        aggregateLikes: 20
-      },
-      {
-        id: 2,
-        title: "Pasta",
-        image: "https://example.com/pasta.jpg",
-        readyInMinutes: 25,
-        aggregateLikes: 10
-      },
-      {
-        id: 3,
-        title: "Pizza",
-        image: "https://example.com/pizza.jpg",
-        readyInMinutes: 15,
-        aggregateLikes: 40
-      }
-    ]);
-
-    
+     
     const randomList = ref(null);
 
-    
-    const refreshRandomRecipes = () => {
+        const refreshRandomRecipes = () => {
       randomList.value?.updateRecipes();
     };
 
@@ -81,7 +57,7 @@ export default {
       randomList.value?.updateRecipes();
     });
 
-    return { store, watchedRecipes, randomList, refreshRandomRecipes };
+    return { store, randomList, refreshRandomRecipes };
   }
 };
 </script>
