@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             
-            <!-- Tabs for all users -->
+            
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'search' }">Search</router-link>
             </li>
@@ -15,7 +15,7 @@
               <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
             </li>
 
-            <!-- Tabs for guests -->
+            
             <template v-if="!store.username">
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
@@ -25,9 +25,9 @@
               </li>
             </template>
 
-            <!-- Tabs for logged-in users -->
+            
             <template v-else>
-              <li class="nav-item dropdown">
+             <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"
@@ -61,7 +61,7 @@
             </template>
 
           </ul>
-          <!-- moving the text to the right -->
+          
           <div class="d-flex">
             <template v-if="!store.username">
               <span class="navbar-text me-3">Hello Guest</span>
@@ -124,6 +124,142 @@ export default {
 .router-link-exact-active {
   font-weight: bold;
   color: #0d6efd !important; 
+  text-decoration: underline;
+}
+</style> -->
+
+
+<template>
+  <div id="app">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <router-link class="navbar-brand" :to="{ name: 'main' }">Recipes</router-link>
+
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            
+            <!-- Tabs for all users -->
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'search' }">Search</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
+            </li>
+
+            <!-- Tabs for guests -->
+            <template v-if="!store.username">
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
+              </li>
+            </template>
+
+            <!-- Tabs for logged-in users -->
+            <template v-else>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Personal
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                  <li>
+                    <router-link class="dropdown-item" :to="{ name: 'favorites' }">My Favorite Recipes</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" :to="{ name: 'myRecipes' }">My Recipes</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" :to="{ name: 'familyRecipes' }">My Family Recipes</router-link>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="nav-item">
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createRecipeModal">
+                  Create Recipe
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button @click="logout" class="btn btn-primary mt-3">Logout</button>
+              </li>
+            </template>
+
+          </ul>
+
+          
+          <div class="d-flex">
+            <template v-if="!store.username">
+              <span class="navbar-text me-3">Hello Guest</span>
+            </template>
+            <template v-else>
+              <span class="navbar-text me-3">Hello, {{ store.username }}</span>
+            </template>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <router-view class="container mt-4" />
+
+    <!-- Create Recipe Modal -->
+    <div class="modal fade" id="createRecipeModal" tabindex="-1" aria-labelledby="createRecipeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createRecipeModalLabel">Create New Recipe</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <CreateRecipeForm />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { useRouter } from 'vue-router';
+import store from './store';
+import CreateRecipeForm from './components/CreateRecipeForm.vue';
+
+export default {
+  name: "App",
+  components: { CreateRecipeForm },
+  setup() {
+    const router = useRouter();
+    const logout = () => {
+      store.logout();
+      router.push("/").catch(() => {});
+    };
+    return { store, logout };
+  }
+}
+</script>
+
+<style lang="scss">
+@import "@/scss/form-style.scss";
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  min-height: 100vh;
+}
+
+.router-link-exact-active {
+  font-weight: bold;
+  color: #0d6efd !important;
   text-decoration: underline;
 }
 </style>

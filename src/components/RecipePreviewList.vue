@@ -12,7 +12,7 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import store from '../store';
+// import store from '../store';
 export default {
   name: "RecipePreviewList",
   components: {
@@ -35,11 +35,13 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        const response = await this.axios.get(
-          store.server_domain + "/api/recipes/random"
-        );
-        console.log("Response data:", response.data);
-        this.recipes = response.data;
+        // Fetch random recipes from the server
+        console.log("Fetching random recipes from server...");
+        // const response = await this.axios.get(
+        //   store.server_domain + "/api/recipes/random"
+        // );
+        // console.log("Response data:", response.data);
+        // this.recipes = response.data;
       } catch (error) {
         console.log(error);
       }

@@ -25,15 +25,18 @@ const router = createRouter({
 // Shared store
 const store = reactive({
   username: localStorage.getItem('username'),
-  // local
-  server_domain: 'http://localhost:3000',
+  server_domain: "http://localhost:3000",
+  
   //remote
   // server_domain: 'https://noa-yaki.cs.bgu.ac.il',
+
   login(username) {
     localStorage.setItem('username', username);
     this.username = username;
-    console.log('login', this.username);
+    console.log("login", this.username);
   },
+
+
   logout() {
     console.log('logout');
     localStorage.removeItem('username');
