@@ -1,0 +1,15 @@
+export default [
+  { value: "", text: "Select intolerance" },
+  { value: "dairy", text: "Dairy" },
+  { value: "egg", text: "Egg" },
+  { value: "gluten", text: "Gluten" },
+  { value: "grain", text: "Grain" },
+  { value: "peanut", text: "Peanut" },
+  { value: "seafood", text: "Seafood" },
+  { value: "sesame", text: "Sesame" },
+  { value: "shellfish", text: "Shellfish" },
+  { value: "soy", text: "Soy" },
+  { value: "sulfite", text: "Sulfite" },
+  { value: "tree nut", text: "Tree Nut" },
+  { value: "wheat", text:"Wheat"},
+];

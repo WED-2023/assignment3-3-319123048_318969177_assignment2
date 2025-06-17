@@ -55,23 +55,50 @@
       <b-button type="submit" variant="primary">Search</b-button>
     </b-form>
 
-    <div class="mt-4">
+    <!-- תוצאות חיפוש -->
+    <div class="mt-5" v-if="searched">
       <h4 v-if="recipes.length">Search Results</h4>
-      <p v-else-if="searched">No results found.</p>
-      <recipe-preview-list :recipes="recipes" />
+      <p v-else>No results found.</p>
+      <div class="row">
+      <div class="col" v-for="r in recipes" :key="r.id">
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </div>
+    </div>
+    </div>
+
+    <!-- חיפושים אחרונים או מתכונים רנדומליים -->
+    <div class="mt-5" v-else>
+      <div v-if="store.username">
+        <div v-if="lastSearches.length">
+          <h4>Last Searched Recipes</h4>
+          <recipe-preview-list :recipes="lastSearches" />
+        </div>
+      </div>
+      <div v-else>
+        <!-- משתמש לא מחובר → מתכונים רנדומליים -->
+        <RecipePreviewList title="Recommended Recipes" />
+      </div>
     </div>
   </b-container>
 </template>
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList.vue";
+import RecipePreview from "../components/RecipePreview.vue";
 import store from "../store";
+import cuisineOptions from '../data/cuisineOptions.js';
+import dietOptions from '../data/dietOptions.js';
+import intoleranceOptions from '../data/intoleranceOptions.js';
 
 export default {
   name: "SearchPage",
-  components: { RecipePreviewList },
+  components: {
+    RecipePreviewList,
+    RecipePreview
+  },
   data() {
     return {
+      store,
       query: "",
       selectedCuisine: "",
       selectedDiet: "",
@@ -79,24 +106,10 @@ export default {
       limit: 5,
       recipes: [],
       searched: false,
-      cuisineOptions: [
-        { value: "", text: "Select cuisine" },
-        { value: "Israeli", text: "Israeli" },
-        { value: "Italian", text: "Italian" },
-        { value: "Chinese", text: "Chinese" }
-      ],
-      dietOptions: [
-        { value: "", text: "Select diet" },
-        { value: "vegetarian", text: "Vegetarian" },
-        { value: "vegan", text: "Vegan" },
-        { value: "gluten free", text: "Gluten Free" }
-      ],
-      intoleranceOptions: [
-        { value: "", text: "Select intolerance" },
-        { value: "dairy", text: "Dairy" },
-        { value: "gluten", text: "Gluten" },
-        { value: "peanut", text: "Peanut" }
-      ],
+      lastSearches: [],
+      cuisineOptions: cuisineOptions,
+      dietOptions: dietOptions,
+      intoleranceOptions: intoleranceOptions,
       limitOptions: [
         { value: 5, text: "5 results" },
         { value: 10, text: "10 results" },
@@ -111,29 +124,33 @@ export default {
         cuisine: this.selectedCuisine,
         diet: this.selectedDiet,
         intolerance: this.selectedIntolerance,
-        number: this.limit
+        limit: this.limit
       };
       try {
-        const res = await this.axios.get(`${store.server_domain}/api/search`, { params });
+        const res = await this.axios.get(`${store.server_domain}/api/recipes`, { params });
         this.recipes = res.data;
-        if (store.username) {
-          localStorage.setItem("lastSearch", JSON.stringify(this.recipes));
-        }
       } catch (err) {
         console.error("Search failed", err);
         this.recipes = [];
       } finally {
         this.searched = true;
       }
+    },
+
+    async loadLastSearches() {
+      try {
+        const res = await this.axios.get(`${store.server_domain}/api/users/my-last-searches`);
+        if (res.data && res.data.length) {
+          this.lastSearches = res.data;
+        }
+      } catch (err) {
+        console.log("No last searches or failed to fetch.", err);
+      }
     }
   },
   mounted() {
     if (store.username) {
-      const saved = localStorage.getItem("lastSearch");
-      if (saved) {
-        this.recipes = JSON.parse(saved);
-        this.searched = true;
-      }
+      this.loadLastSearches();
     }
   }
 };
