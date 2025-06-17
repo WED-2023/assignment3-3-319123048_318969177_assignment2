@@ -47,7 +47,7 @@ const store = reactive({
 // Axios interceptors
 axios.interceptors.request.use((config) => config, (error) => Promise.reject(error));
 axios.interceptors.response.use((response) => response, (error) => Promise.reject(error));
-
+axios.defaults.withCredentials = true;
 // Create app
 const app = createApp(App);
 
