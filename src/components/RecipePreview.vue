@@ -5,17 +5,34 @@
       @error="onImageError"
       class="card-img-top recipe-image"
       alt="Recipe image"
+      @click="goToRecipe"
     />
     <div class="card-body text-center">
       <h5 class="card-title">{{ recipe.title }}</h5>
       <p class="card-text">{{ recipe.readyInMinutes }} minutes</p>
-      <p class="card-text">{{ recipe.popularity }} likes</p>
+      <p class="card-text">👍 {{ likes }} likes</p>
+
+      <!-- כפתור לייק (לכל אחד) -->
+      <button class="btn btn-outline-primary btn-sm mt-1" @click="likeRecipe">
+        👍 Like
+      </button>
+
+      <!-- כפתור מועדף (רק למשתמשים מחוברים) -->
+      <button
+        v-if="store.username"
+        class="btn btn-outline-danger btn-sm mt-1 ms-2"
+        @click="markAsFavorite"
+      >
+        ♥ Favorite
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import defaultImage from "@/assets/cooking.jpeg";
+import store from "@/store";
 
 export default {
   name: "RecipePreview",
@@ -28,43 +45,42 @@ export default {
   data() {
     return {
       currentImage: this.recipe.image || defaultImage,
+      likes: this.recipe.popularity || 0,
+      store: store,
     };
   },
   methods: {
     onImageError() {
       this.currentImage = defaultImage;
     },
+    likeRecipe() {
+      const key = `liked_${this.recipe.id}`;
+
+      axios
+        .post(`${store.server_domain}/api/recipes/${this.recipe.id}/like`)
+        .then(() => {
+          this.likes += 1;
+          localStorage.setItem(key, "true");
+        })
+        .catch((err) => {
+          console.error("Like failed:", err);
+        });
+    },
+    markAsFavorite() {
+      axios
+        .post(`${store.server_domain}/api/users/my_favorites`, {
+          recipeID: this.recipe.id,
+        })
+        .then(() => {
+          alert("Recipe added to favorites!");
+        })
+        .catch((err) => {
+          console.error("Failed to favorite recipe:", err);
+        });
+    },
+    goToRecipe() {
+      this.$router.push({ name: "recipe", params: { recipeid: this.recipe.id } });
+    },
   },
 };
 </script>
-
-<style scoped>
-.recipe-image {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 6px 6px 0 0;
-}
-
-.card {
-  max-height: 250px;
-  overflow: hidden;
-  font-size: 0.9rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-body {
-  padding: 10px;
-}
-
-.card-title {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.card-text {
-  margin: 0;
-  color: #666;
-}
-</style>
