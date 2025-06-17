@@ -2,6 +2,7 @@
   <b-container class="mt-4">
     <h2>Search Recipes</h2>
 
+    <!-- טופס חיפוש -->
     <b-form @submit.prevent="searchRecipes">
       <b-row class="mb-3">
         <b-col cols="12" md="6">
@@ -78,7 +79,7 @@
       <h4 v-if="recipes.length">Search Results</h4>
       <p v-else>No results found for your search criteria.</p>
       <div class="row">
-        <div class="col" v-for="r in recipes" :key="r.id">
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="r in sortedRecipes" :key="r.id">
           <RecipePreview class="recipePreview" :recipe="r" />
         </div>
       </div>
@@ -90,6 +91,9 @@
         <div v-if="lastSearches.length">
           <h4>Last Searched Recipes</h4>
           <recipe-preview-list :recipes="lastSearches" />
+        </div>
+        <div v-else>
+          <p class="text-muted">You have no recent searches yet.</p>
         </div>
       </div>
       <div v-else>
@@ -145,6 +149,17 @@ export default {
       ]
     };
   },
+  computed: {
+    sortedRecipes() {
+      const key = this.sortBy;
+      const dir = this.sortDirection;
+      return [...this.recipes].sort((a, b) => {
+        const valA = a[key] || 0;
+        const valB = b[key] || 0;
+        return dir === "asc" ? valA - valB : valB - valA;
+      });
+    }
+  },
   methods: {
     async searchRecipes() {
       if (!this.query) {
@@ -157,13 +172,20 @@ export default {
         cuisine: this.selectedCuisine,
         diet: this.selectedDiet,
         intolerances: this.selectedIntolerance,
-        limit: this.limit,
-        sortBy: this.sortBy,
-        sortDirection: this.sortDirection
+        limit: this.limit
       };
+
       try {
         const res = await this.axios.get(`${store.server_domain}/api/recipes`, { params });
         this.recipes = res.data;
+
+        // add the post to the server side, update the API and maybe change the DB table
+        if (store.username) {
+          await this.axios.post(`${store.server_domain}/api/users/my-last-searches`, {
+            query: this.query,
+            selected: this.recipes.length > 0 ? this.recipes[0].id : null
+          });
+        }
       } catch (err) {
         console.error("Search failed", err);
         this.recipes = [];
@@ -190,3 +212,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.recipePreview {
+  height: 100%;
+}
+</style>

@@ -26,7 +26,7 @@
 
       <h4 class="mt-4">Links to Previous Exercises</h4>
       <ul>
-        <li><a href="https://app.swaggerhub.com/apis-docs/bgurecipeweb/Recipe_API/1.0.0 " target="_blank">project 3.  – API Documentation</a></li>
+        <li><a href="https://app.swaggerhub.com/apis-docs/bgurecipeweb/Recipe_API/1.0.0 " target="_blank">project 3.1  – API Documentation</a></li>
         <li><a href="https://github.com/WED-2023/assignment3-2-319123048_318969177_assignment2" target="_blank">project 3.2 – Server Side</a></li>
       </ul>
     </b-card>
