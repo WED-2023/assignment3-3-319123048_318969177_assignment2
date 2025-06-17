@@ -50,6 +50,24 @@
             :options="limitOptions"
           />
         </b-col>
+
+        <b-col cols="6" md="3">
+          <label for="sortBy">Sort by:</label>
+          <b-form-select
+            id="sortBy"
+            v-model="sortBy"
+            :options="sortByOptions"
+          />
+        </b-col>
+
+        <b-col cols="6" md="3">
+          <label for="sortDirection">Sort direction:</label>
+          <b-form-select
+            id="sortDirection"
+            v-model="sortDirection"
+            :options="sortDirectionOptions"
+          />
+        </b-col>
       </b-row>
 
       <b-button type="submit" variant="primary">Search</b-button>
@@ -58,12 +76,12 @@
     <!-- תוצאות חיפוש -->
     <div class="mt-5" v-if="searched">
       <h4 v-if="recipes.length">Search Results</h4>
-      <p v-else>No results found.</p>
+      <p v-else>No results found for your search criteria.</p>
       <div class="row">
-      <div class="col" v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
+        <div class="col" v-for="r in recipes" :key="r.id">
+          <RecipePreview class="recipePreview" :recipe="r" />
+        </div>
       </div>
-    </div>
     </div>
 
     <!-- חיפושים אחרונים או מתכונים רנדומליים -->
@@ -104,27 +122,44 @@ export default {
       selectedDiet: "",
       selectedIntolerance: "",
       limit: 5,
+      sortBy: "popularity",
+      sortDirection: "desc",
       recipes: [],
       searched: false,
       lastSearches: [],
-      cuisineOptions: cuisineOptions,
-      dietOptions: dietOptions,
-      intoleranceOptions: intoleranceOptions,
+      cuisineOptions,
+      dietOptions,
+      intoleranceOptions,
       limitOptions: [
         { value: 5, text: "5 results" },
         { value: 10, text: "10 results" },
         { value: 15, text: "15 results" }
+      ],
+      sortByOptions: [
+        { value: "popularity", text: "Popularity" },
+        { value: "readyInMinutes", text: "Preparation Time" }
+      ],
+      sortDirectionOptions: [
+        { value: "desc", text: "Descending" },
+        { value: "asc", text: "Ascending" }
       ]
     };
   },
   methods: {
     async searchRecipes() {
+      if (!this.query) {
+        alert("Please enter a recipe name to search.");
+        return;
+      }
+
       const params = {
         query: this.query,
         cuisine: this.selectedCuisine,
         diet: this.selectedDiet,
-        intolerance: this.selectedIntolerance,
-        limit: this.limit
+        intolerances: this.selectedIntolerance,
+        limit: this.limit,
+        sortBy: this.sortBy,
+        sortDirection: this.sortDirection
       };
       try {
         const res = await this.axios.get(`${store.server_domain}/api/recipes`, { params });

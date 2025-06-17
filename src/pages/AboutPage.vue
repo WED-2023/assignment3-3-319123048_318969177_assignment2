@@ -15,7 +15,6 @@
       <li> Create your own recipes in a modal form</li>
       <li> Save favorite recipes and track recently viewed ones</li>
       <li> Family recipe collection with personal stories and images</li>
-      <li> Meal planning board with progress tracking (bonus)</li>
     </ul>
 
 
