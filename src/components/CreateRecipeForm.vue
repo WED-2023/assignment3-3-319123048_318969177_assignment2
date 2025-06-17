@@ -96,13 +96,13 @@
 import { reactive, computed } from 'vue';
 import { required, helpers, minValue, url } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-import * as bootstrap from 'bootstrap';
+
 import store from '../store';
 import axios from 'axios';
 
 export default {
   name: 'CreateRecipeForm',
-  setup() {
+  setup(props,{ emit }) {
     const form = reactive({
       title: '',
       image: '',
@@ -165,45 +165,62 @@ export default {
     });
 
     const submitRecipe = async () => {
-        v$.value.$touch();
-        if (v$.value.$invalid) return;
+      v$.value.$touch();
+      if (v$.value.$invalid) return;
 
-        const instructions = instructionsList.filter(i => i.trim());
+      const instructions = instructionsList.filter(i => i.trim());
 
-        const body = {
-            ...form,
-            ingredients: form.ingredients.filter(i => i.name && !isNaN(i.amount) && i.unit),
-            instructions
-        };
+      const body = {
+        title: form.title,
+        image: form.image,
+        readyInMinutes: form.readyInMinutes,
+        servings: form.servings,
+        popularity: form.popularity,
+        isvegan: form.isvegan ? 1 : 0,
+        isvegetarian: form.isvegetarian ? 1 : 0,
+        isglutenFree: form.isglutenFree ? 1 : 0,
+        isFamily: form.isFamily ? 1 : 0,
+        familyMember: form.isFamily ? form.familyMember : '',
+        occusion: form.isFamily ? form.occusion : '',
+        ingredients: form.ingredients.filter(i => i.name && !isNaN(i.amount) && i.unit),
+        instructions
+      };
 
-        try {
-            await axios.post(
-            `${store.server_domain}/api/users/my_recipes`,
-            body,
-            {
-                headers: {
-                user_id: store.user_id  // need to add this to store.js or use username
-                }
-            }
-            );
+      try {
+        await axios.post(`${store.server_domain}/api/users/my_recipes`, body);
+        alert("Recipe saved successfully!");
+        emit('saved');
 
-            const modal = bootstrap.Modal.getInstance(document.getElementById('createRecipeModal'));
-            alert("Recipe saved successfully!");
-            modal.hide();
-            
+        // ✅ איפוס הטופס
+        form.title = '';
+        form.image = '';
+        form.readyInMinutes = 1;
+        form.servings = 1;
+        form.popularity = 0;
+        form.isvegan = false;
+        form.isvegetarian = false;
+        form.isglutenFree = false;
+        form.isFamily = false;
+        form.familyMember = '';
+        form.occusion = '';
+        form.ingredients = [{ name: '', amount: null, unit: '' }];
+        instructionsList.splice(0, instructionsList.length, '');
 
-        } catch (err) {
-            const serverMessage = err.response?.data?.message || "Try again";
+        v$.value.$reset(); // איפוס ולידציות
 
-            if (err.response?.status === 400) {
-            alert("Submission failed: Invalid recipe format");
-            } else if (err.response?.status === 401) {
-            alert("Please login to create a recipe.");
-            } else {
-            alert("Submission failed: " + serverMessage);
-            }
+      } catch (err) {
+        const serverMessage = err.response?.data?.message || "Try again";
+
+        if (err.response?.status === 400) {
+          alert("Submission failed: Invalid recipe format");
+        } else if (err.response?.status === 401) {
+          alert("Please login to create a recipe.");
+        } else {
+          alert("Submission failed: " + serverMessage);
         }
-        };
+      }
+    };
+
 
     return {
       form,

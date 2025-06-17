@@ -1,8 +1,12 @@
 <template>
   <div class="container">
-    <h3>{{ title }}</h3>
-    
-    <div class="row">
+    <h3>Last Watched Recipes</h3>
+
+    <div v-if="recipes.length === 0">
+      <p>No recently watched recipes yet.</p>
+    </div>
+
+    <div class="row" v-else>
       <div class="col" v-for="r in recipes" :key="r.id">
         <RecipePreview class="recipePreview" :recipe="r" />
       </div>
@@ -12,17 +16,12 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import store from '../store';
+import store from "../store";
+
 export default {
-  name: "RecipePreviewList",
+  name: "LastWatchedRecipes",
   components: {
     RecipePreview,
-  },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
   },
   data() {
     return {
@@ -30,20 +29,18 @@ export default {
     };
   },
   mounted() {
-    this.updateRecipes();
+    this.loadLastWatchedRecipes();
   },
   methods: {
-    async updateRecipes() {
+    async loadLastWatchedRecipes() {
       try {
-        // Fetch random recipes from the server
-        console.log("Fetching random recipes from server...");
         const response = await this.axios.get(
-          store.server_domain + "/api/recipes/random"
+          store.server_domain + "/api/users/my-last-watched",
+          { withCredentials: true }
         );
-        console.log("Response data:", response.data);
         this.recipes = response.data;
       } catch (error) {
-        console.log(error);
+        console.error("Error loading last watched recipes:", error);
       }
     },
   },

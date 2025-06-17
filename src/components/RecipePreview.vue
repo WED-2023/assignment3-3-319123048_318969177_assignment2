@@ -1,7 +1,6 @@
 <template>
   <div class="card h-100">
     <img
-      v-if="recipe.image"
       :src="currentImage"
       @error="onImageError"
       class="card-img-top recipe-image"
@@ -10,31 +9,33 @@
     <div class="card-body text-center">
       <h5 class="card-title">{{ recipe.title }}</h5>
       <p class="card-text">{{ recipe.readyInMinutes }} minutes</p>
-      <p class="card-text">{{ recipe.aggregateLikes }} likes</p>
+      <p class="card-text">{{ recipe.popularity }} likes</p>
     </div>
   </div>
 </template>
 
 <script>
+import defaultImage from "@/assets/cooking.jpeg";
+
 export default {
   name: "RecipePreview",
   props: {
     recipe: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      currentImage: this.recipe.image
+      currentImage: this.recipe.image || defaultImage,
     };
   },
   methods: {
     onImageError() {
-      this.currentImage = 'Not Found';
-    }
-  }
-}
+      this.currentImage = defaultImage;
+    },
+  },
+};
 </script>
 
 <style scoped>

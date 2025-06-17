@@ -1,7 +1,7 @@
 import { reactive } from 'vue';
 
 const store = reactive({
-  username: localStorage.getItem('username'),
+  username: undefined,
   server_domain: "http://localhost:3000",
   
   //remote
@@ -14,10 +14,10 @@ const store = reactive({
   },
 
   logout() {
-    console.log("logout");
+    console.log('logout');
     localStorage.removeItem('username');
     this.username = undefined;
-  }
+  },
 });
 
 export default store;

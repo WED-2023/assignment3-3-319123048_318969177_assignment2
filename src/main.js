@@ -24,7 +24,7 @@ const router = createRouter({
 
 // Shared store
 const store = reactive({
-  username: localStorage.getItem('username'),
+  username: undefined,
   server_domain: "http://localhost:3000",
   
   //remote
@@ -36,14 +36,13 @@ const store = reactive({
     console.log("login", this.username);
   },
 
-
   logout() {
     console.log('logout');
     localStorage.removeItem('username');
     this.username = undefined;
   },
 });
-
+store.logout();
 // Axios interceptors
 axios.interceptors.request.use((config) => config, (error) => Promise.reject(error));
 axios.interceptors.response.use((response) => response, (error) => Promise.reject(error));
