@@ -2,7 +2,7 @@
   <b-container class="mt-4">
     <h2>Search Recipes</h2>
 
-    <!-- טופס חיפוש -->
+    <!-- Search Form -->
     <b-form @submit.prevent="searchRecipes">
       <b-row class="mb-3">
         <b-col cols="12" md="6">
@@ -74,33 +74,67 @@
       <b-button type="submit" variant="primary">Search</b-button>
     </b-form>
 
-    <!-- תוצאות חיפוש -->
+    <!-- Search Results -->
     <div class="mt-5" v-if="searched">
-      <h4 v-if="recipes.length">Search Results</h4>
-      <p v-else>No results found for your search criteria.</p>
-      <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="r in sortedRecipes" :key="r.id">
-          <RecipePreview class="recipePreview" :recipe="r" />
-        </div>
+      <div v-if="recipes.length">
+        <b-row>
+          <b-col
+            v-for="r in sortedRecipes"
+            :key="r.id"
+            cols="12"
+            md="6"
+            lg="4"
+            class="mb-4 d-flex align-items-stretch"
+          >
+            <RecipePreview class="recipePreview" :recipe="r" />
+          </b-col>
+        </b-row>
+      </div>
+      <div v-else>
+        <p class="text-danger">No results found for your search criteria.</p>
       </div>
     </div>
 
-    <!-- חיפושים אחרונים או מתכונים רנדומליים -->
+    <!-- Last searches or fallback -->
     <div class="mt-5" v-else>
       <div v-if="store.username">
         <div v-if="lastSearches.length">
-          <h4>Last Searched Recipes</h4>
-          <recipe-preview-list :recipes="lastSearches" />
+          <h4 class="mb-3">Last Searched Recipes</h4>
+
+          <div class="mb-3 p-3 bg-light border rounded" v-if="lastSearchMeta">
+            <p class="mb-0">
+              <strong>Last search:</strong>
+              "{{ lastSearchMeta.query || 'N/A' }}"
+              <span v-if="lastSearchMeta.cuisine"> | Cuisine: {{ lastSearchMeta.cuisine }}</span>
+              <span v-if="lastSearchMeta.diet"> | Diet: {{ lastSearchMeta.diet }}</span>
+              <span v-if="lastSearchMeta.intolerance"> | Intolerance: {{ lastSearchMeta.intolerance }}</span>
+              <span v-if="lastSearchMeta.limit"> | Limit: {{ lastSearchMeta.limit }}</span>
+              <span v-if="lastSearchMeta.sortBy"> | Sorted by: {{ lastSearchMeta.sortBy }} ({{ lastSearchMeta.sortDirection }})</span>
+            </p>
+          </div>
+
+          <b-row>
+            <b-col
+              v-for="recipe in lastSearches"
+              :key="recipe.id"
+              cols="12"
+              md="6"
+              lg="4"
+              class="mb-4 d-flex align-items-stretch"
+            >
+              <RecipePreview :recipe="recipe" />
+            </b-col>
+          </b-row>
         </div>
         <div v-else>
           <p class="text-muted">You have no recent searches yet.</p>
         </div>
       </div>
       <div v-else>
-        <!-- משתמש לא מחובר → מתכונים רנדומליים -->
         <RecipePreviewList title="Recommended Recipes" />
       </div>
     </div>
+
   </b-container>
 </template>
 
@@ -131,6 +165,7 @@ export default {
       recipes: [],
       searched: false,
       lastSearches: [],
+      lastSearchMeta: null,
       cuisineOptions,
       dietOptions,
       intoleranceOptions,
@@ -176,14 +211,24 @@ export default {
       };
 
       try {
-        const res = await this.axios.get(`${store.server_domain}/api/recipes`, { params });
+        const res = await this.axios.get(`${store.server_domain}/api/recipes`, {
+          params,
+          withCredentials: true,
+        });
         this.recipes = res.data;
 
-        // add the post to the server side, update the API and maybe change the DB table
         if (store.username) {
           await this.axios.post(`${store.server_domain}/api/users/my-last-searches`, {
             query: this.query,
-            selected: this.recipes.length > 0 ? this.recipes[0].id : null
+            selectedCuisine: this.selectedCuisine,
+            selectedDiet: this.selectedDiet,
+            selectedIntolerance: this.selectedIntolerance,
+            limit_results: this.limit,
+            sortBy: this.sortBy,
+            sortDirection: this.sortDirection,
+            recipeIds: this.recipes.map(r => r.id),
+          }, {
+            withCredentials: true,
           });
         }
       } catch (err) {
@@ -197,8 +242,9 @@ export default {
     async loadLastSearches() {
       try {
         const res = await this.axios.get(`${store.server_domain}/api/users/my-last-searches`);
-        if (res.data && res.data.length) {
-          this.lastSearches = res.data;
+        if (res.data && res.data.recipes) {
+          this.lastSearches = res.data.recipes;
+          this.lastSearchMeta = res.data.searchMeta; // נשמור את פרטי החיפוש האחרון
         }
       } catch (err) {
         console.log("No last searches or failed to fetch.", err);
