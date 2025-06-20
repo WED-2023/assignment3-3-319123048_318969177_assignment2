@@ -97,12 +97,12 @@ export default {
     },
     async likeRecipe() {
       try {
-        await axios.post(
+        const res = await axios.post(
           `${store.server_domain}/api/recipes/${this.recipe.id}/like`,
           {},
           { withCredentials: true }
         );
-        this.likes += 1;
+        this.likes = res.data.popularity;
       } catch (err) {
         console.error("Like failed:", err);
         alert("Failed to like recipe.");
@@ -130,7 +130,7 @@ export default {
         this.likes = res.data.likes ?? 0;
       } catch (err) {
         console.error("Failed to fetch likes:", err);
-        this.likes = this.recipe.popularity || 0;
+        this.likes = 0;
       }
     },
     async checkIfWatched() {

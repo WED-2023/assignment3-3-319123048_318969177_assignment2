@@ -125,7 +125,7 @@
         </template>
       </div>
 
-      <button type="submit" class="btn btn-success mt-3" :disabled="v$.form.$invalid">
+      <button type="submit" class="btn btn-primary mt-3" :disabled="v$.form.$invalid">
         Register
       </button>
     </form>
@@ -171,7 +171,7 @@ export default {
           required: helpers.withMessage("Username is required", required),
           minLength: helpers.withMessage("Minimum 3 characters", minLength(3)),
           maxLength: helpers.withMessage("Maximum 8 characters", maxLength(8)),
-          alpha: helpers.withMessage("Letters only", alpha)
+          alpha: helpers.withMessage(" Letters only", alpha)
         },
         firstName: {
           required: helpers.withMessage("First name is required", required)
@@ -184,13 +184,13 @@ export default {
         },
         email: {
           required: helpers.withMessage("Email is required", required),
-          email: helpers.withMessage("Must be a valid email", email)
+          email: helpers.withMessage(" Must be a valid email", email)
         },
         password: {
           required: helpers.withMessage("Password is required", required),
           minLength: helpers.withMessage("Minimum 5 characters", minLength(5)),
           maxLength: helpers.withMessage("Maximum 10 characters", maxLength(10)),
-          strong: helpers.withMessage("Must contain number & special character", helpers.regex(/^(?=.*[0-9])(?=.*[\W_]).+$/))
+          strong: helpers.withMessage(" Must contain number & special character", helpers.regex(/^(?=.*[0-9])(?=.*[\W_]).+$/))
         },
         confirmPassword: {
           required: helpers.withMessage("Confirmation is required", required),

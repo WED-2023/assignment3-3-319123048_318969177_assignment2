@@ -28,6 +28,7 @@
       <ul>
         <li><a href="https://app.swaggerhub.com/apis-docs/bgurecipeweb/Recipe_API/1.0.0 " target="_blank">project 3.1  – API Documentation</a></li>
         <li><a href="https://github.com/WED-2023/assignment3-2-319123048_318969177_assignment2" target="_blank">project 3.2 – Server Side</a></li>
+        <li><a href="https://github.com/WED-2023/assignment3-3-319123048_318969177_assignment2#" target="_blank">project 3.3 – Client Side</a></li>
       </ul>
     </b-card>
   </b-container>

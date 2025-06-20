@@ -1,33 +1,31 @@
 <template>
   <div class="container py-4">
     <div v-if="recipe">
-      <!-- הודעת שגיאה במקרה שאין הוראות -->
       <div v-if="recipe._instructions.length === 0" class="alert alert-warning text-center mb-5">
+        <h4 class="text-danger">In spoonacular the instructions are empty so</h4>
         <h4 class="text-danger">This recipe has no instructions 😢</h4>
         <p class="mb-3">Would you like to see something similar?</p>
         <button class="btn btn-outline-primary mb-4" @click="fetchSimilarRecipes">
           🔍 Show similar recipes
         </button>
-        <!-- מתכונים דומים -->
         <div v-if="similarRecipes.length" class="row justify-content-center">
           <div v-for="r in recipes" :key="r.id">
             <RecipePreview class="similarRecipes" :recipe="r" />
           </div>
         </div>
       </div>
-      <!-- תצוגת מתכון רגילה -->
+
       <div v-else>
-        <div class="text-center mb-4">
-          <h1>{{ recipe.title }}</h1>
-          <img
-            :src="currentImage"
-            @error="onImageError"
-            class="img-fluid rounded shadow-sm"
-            style="max-height: 400px; object-fit: cover;"
-          />
-          <div class="mt-2 text-muted">
-            ⏱ {{ recipe.readyInMinutes }} minutes • 👍 {{ recipe.popularity }} likes
-          </div>
+        <div class="mt-2 text-muted">
+          ⏱ {{ recipe.readyInMinutes }} minutes • 👍 {{ recipe.popularity }} likes
+        </div>
+        <div class="mt-2">
+          🧑‍🍳 Servings: {{ recipe.servings }}
+        </div>
+        <div class="mt-2 dietary-icons">
+          <span v-if="recipe.vegetarian" title="Vegetarian">🥬 Vegetarian</span>
+          <span v-if="recipe.vegan" title="Vegan" class="ms-3">🌱 Vegan</span>
+          <span v-if="recipe.glutenFree" title="Gluten Free" class="ms-3">🚫🌾 Gluten Free</span>
         </div>
 
         <div class="row">
@@ -100,13 +98,16 @@ export default {
         image: data.image,
         readyInMinutes: data.readyInMinutes,
         popularity: data.popularity,
+        servings: data.servings, 
+        vegetarian: data.vegetarian, 
+        vegan: data.vegan, 
+        glutenFree: data.glutenFree, 
         ingredients: data.ingredients || [],
         _instructions,
       };
 
       this.currentImage = data.image || defaultImage;
 
-      // אם אין הוראות – נטען מתכונים דומים אוטומטית
       if (_instructions.length === 0) {
         this.fetchSimilarRecipes();
       }
@@ -145,5 +146,9 @@ export default {
 img.img-fluid {
   max-width: 100%;
   border-radius: 12px;
+}
+.dietary-icons span {
+  font-weight: 500;
+  font-size: 1rem;
 }
 </style>

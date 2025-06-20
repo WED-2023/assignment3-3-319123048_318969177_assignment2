@@ -2,9 +2,7 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <!-- לוגו -->
-        <router-link class="navbar-brand" :to="{ name: 'main' }">Recipes</router-link>
-
+        <router-link class="navbar-link" :to="{ name: 'main' }">Recipes</router-link>
         <!-- collapse button for mobile -->
         <button
           class="navbar-toggler"
@@ -18,9 +16,8 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- תוכן ה-navbar -->
+        <!--navbar -->
         <div class="collapse navbar-collapse" id="navbarContent">
-          <!-- ניווט שמאלי -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'search' }">Search</router-link>
@@ -29,7 +26,7 @@
               <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
             </li>
 
-            <!-- משתמש לא מחובר -->
+            <!-- Guest -->
             <template v-if="!store.username">
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
@@ -39,9 +36,9 @@
               </li>
             </template>
 
-            <!-- משתמש מחובר -->
+            <!-- logged in user -->
             <template v-else>
-              <!-- Dropdown של Personal -->
+              <!-- Personal -->
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -66,7 +63,7 @@
                 </ul>
               </li>
 
-              <!-- כפתור Create Recipe מיד אחרי dropdown -->
+              <!-- Create Recipe -->
               <li class="nav-item d-flex align-items-center">
                 <button
                   class="btn btn-outline-primary ms-2"
@@ -78,7 +75,6 @@
             </template>
           </ul>
 
-          <!-- ניווט ימני -->
           <div class="d-flex align-items-center gap-2">
             <span class="navbar-text">
               Hello, {{ store.username || "Guest" }}
@@ -92,7 +88,7 @@
       </div>
     </nav>
 
-    <!-- התוכן המרכזי -->
+    <!-- Main navbar content -->
     <router-view class="container mt-4" />
 
     <!-- Create Recipe Modal -->

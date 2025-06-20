@@ -82,7 +82,7 @@
       <input v-model="form.occusion" type="text" class="form-control" />
     </div>
 
-    <button type="submit" class="btn btn-success w-100 mt-3" :disabled="v$.$invalid">
+    <button type="submit" class="btn btn-primary w-100 mt-3" :disabled="v$.$invalid">
       Save Recipe
     </button>
   </form>

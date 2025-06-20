@@ -5,12 +5,8 @@
     <!-- Static Family Recipes -->
     <div class="mb-5">
       <h4 class="mb-3">✨ Our Family Classics:</h4>
-      <div class="row">
-        <div class="col-md-4 mb-4" v-for="recipe in staticFamilyRecipes" :key="recipe.id">
-          <RecipePreview :recipe="recipe" />
+          <FamilyOverviewRecipe :recipes="staticFamilyRecipes" />
         </div>
-      </div>
-    </div>
 
     <!-- User's Family Recipes -->
     <div>
@@ -30,6 +26,7 @@
 
 <script>
 import RecipePreview from "@/components/RecipePreview.vue";
+import FamilyOverviewRecipe from "@/components/FamilyOverviewRecipe.vue";
 import staticRecipes from "@/data/familyRecipes";
 import axios from "axios";
 import store from "@/store";
@@ -37,6 +34,7 @@ import store from "@/store";
 export default {
   name: "FamilyRecipesPage",
   components: {
+    FamilyOverviewRecipe,
     RecipePreview
   },
   data() {
