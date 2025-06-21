@@ -17,19 +17,21 @@
 
       <div v-else>
         <h1 class="text-center mb-4">{{ recipe.title }}</h1>
-        <img
-          :src="currentImage"
-          class="img-fluid rounded mb-4"
-          alt="Recipe Image"
-          @error="onImageError"
-        />
+        <div class="text-center">
+          <img
+            :src="currentImage"
+            class="img-fluid rounded mb-4"
+            alt="Recipe Image"
+            @error="onImageError"
+          />
+        </div>
         <div class="text-center mb-4">
           ⏱ {{ recipe.readyInMinutes }} minutes • 👍 {{ recipe.popularity }} likes
         </div>
         <div class="text-center mb-4">
           🧑‍🍳 Servings: {{ recipe.servings }}
         </div>
-        <div class="center mb-4 dietary-icons">
+        <div class="d-flex justify-content-center mb-4 dietary-icons">
           <span v-if="recipe.vegetarian" title="Vegetarian">🥬 Vegetarian</span>
           <span v-if="recipe.vegan" title="Vegan" class="ms-3">🌱 Vegan</span>
           <span v-if="recipe.glutenFree" title="Gluten Free" class="ms-3">🚫🌾 Gluten Free</span>
