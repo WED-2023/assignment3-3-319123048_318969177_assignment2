@@ -16,13 +16,20 @@
       </div>
 
       <div v-else>
-        <div class="mt-2 text-muted">
+        <h1 class="text-center mb-4">{{ recipe.title }}</h1>
+        <img
+          :src="currentImage"
+          class="img-fluid rounded mb-4"
+          alt="Recipe Image"
+          @error="onImageError"
+        />
+        <div class="text-center mb-4">
           ⏱ {{ recipe.readyInMinutes }} minutes • 👍 {{ recipe.popularity }} likes
         </div>
-        <div class="mt-2">
+        <div class="text-center mb-4">
           🧑‍🍳 Servings: {{ recipe.servings }}
         </div>
-        <div class="mt-2 dietary-icons">
+        <div class="center mb-4 dietary-icons">
           <span v-if="recipe.vegetarian" title="Vegetarian">🥬 Vegetarian</span>
           <span v-if="recipe.vegan" title="Vegan" class="ms-3">🌱 Vegan</span>
           <span v-if="recipe.glutenFree" title="Gluten Free" class="ms-3">🚫🌾 Gluten Free</span>
@@ -81,14 +88,14 @@ export default {
       const response = await this.axios.get(
         this.store.server_domain + "/api/recipes/" + this.$route.params.recipeid
       );
-
+      console.log("Response received:", response);
       if (response.status !== 200 || !response.data) {
         this.$router.replace("/NotFound");
         return;
       }
 
       const data = response.data;
-      const _instructions = (data.instructions?.[0] || []).map((step, index) => ({
+      const _instructions = (data.instructions || []).map((step, index) => ({
         number: index + 1,
         step: step,
       }));

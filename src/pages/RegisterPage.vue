@@ -152,8 +152,8 @@ export default {
   setup() {
     const form = reactive({
       username: '',
-      firstName: '',
-      lastName: '',
+      firstname: '',
+      lastname: '',
       country: '',
       email: '',
       password: '',
@@ -173,10 +173,10 @@ export default {
           maxLength: helpers.withMessage("Maximum 8 characters", maxLength(8)),
           alpha: helpers.withMessage(" Letters only", alpha)
         },
-        firstName: {
+        firstname: {
           required: helpers.withMessage("First name is required", required)
         },
-        lastName: {
+        lastname: {
           required: helpers.withMessage("Last name is required", required)
         },
         country: {
@@ -225,8 +225,8 @@ export default {
         try {
           await axios.post(`${store.server_domain}/api/auth/register`, {
             username: form.username,
-            firstName: form.firstName,
-            lastName: form.lastName,
+            firstName: form.firstname,
+            lastName: form.lastname,
             country: form.country,
             email: form.email,
             password: form.password
