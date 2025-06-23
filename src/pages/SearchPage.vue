@@ -1,80 +1,26 @@
 <template>
   <b-container class="mt-4">
-    <h2>Search Recipes</h2>
+    <h2 class="mb-4">Search Recipes</h2>
 
-    <!-- Search Form -->
-    <b-form @submit.prevent="searchRecipes">
-      <b-row class="mb-3">
-        <b-col cols="12" md="6">
-          <label for="query">Recipe name:</label>
-          <b-form-input
-            id="query"
-            v-model="query"
-            placeholder="Search by recipe name..."
-          />
-        </b-col>
+    <!-- טופס חיפוש -->
+    <SearchForm
+      :query="query"
+      :selectedCuisine="selectedCuisine"
+      :selectedDiet="selectedDiet"
+      :selectedIntolerance="selectedIntolerance"
+      :limit="limit"
+      :sortBy="sortBy"
+      :sortDirection="sortDirection"
+      :cuisineOptions="cuisineOptions"
+      :dietOptions="dietOptions"
+      :intoleranceOptions="intoleranceOptions"
+      :limitOptions="limitOptions"
+      :sortByOptions="sortByOptions"
+      :sortDirectionOptions="sortDirectionOptions"
+      @submitSearch="searchRecipes"
+    />
 
-        <b-col cols="6" md="2">
-          <label for="cuisine">Cuisine:</label>
-          <b-form-select
-            id="cuisine"
-            v-model="selectedCuisine"
-            :options="cuisineOptions"
-          />
-        </b-col>
-
-        <b-col cols="6" md="2">
-          <label for="diet">Diet:</label>
-          <b-form-select
-            id="diet"
-            v-model="selectedDiet"
-            :options="dietOptions"
-          />
-        </b-col>
-
-        <b-col cols="6" md="2">
-          <label for="intolerance">Intolerance:</label>
-          <b-form-select
-            id="intolerance"
-            v-model="selectedIntolerance"
-            :options="intoleranceOptions"
-          />
-        </b-col>
-      </b-row>
-
-      <b-row class="mb-3">
-        <b-col cols="6" md="3">
-          <label for="limit">Number of results:</label>
-          <b-form-select
-            id="limit"
-            v-model="limit"
-            :options="limitOptions"
-          />
-        </b-col>
-
-        <b-col cols="6" md="3">
-          <label for="sortBy">Sort by:</label>
-          <b-form-select
-            id="sortBy"
-            v-model="sortBy"
-            :options="sortByOptions"
-          />
-        </b-col>
-
-        <b-col cols="6" md="3">
-          <label for="sortDirection">Sort direction:</label>
-          <b-form-select
-            id="sortDirection"
-            v-model="sortDirection"
-            :options="sortDirectionOptions"
-          />
-        </b-col>
-      </b-row>
-
-      <b-button type="submit" variant="primary">Search</b-button>
-    </b-form>
-
-    <!-- Search Results -->
+    <!-- תוצאות חיפוש -->
     <div class="mt-5" v-if="searched">
       <div v-if="recipes.length">
         <b-row>
@@ -95,7 +41,7 @@
       </div>
     </div>
 
-    <!-- Last searches or fallback -->
+    <!-- חיפושים קודמים או מתכונים מומלצים -->
     <div class="mt-5" v-else>
       <div v-if="store.username">
         <div v-if="lastSearches.length">
@@ -109,7 +55,9 @@
               <span v-if="lastSearchMeta.diet"> | Diet: {{ lastSearchMeta.diet }}</span>
               <span v-if="lastSearchMeta.intolerance"> | Intolerance: {{ lastSearchMeta.intolerance }}</span>
               <span v-if="lastSearchMeta.limit"> | Limit: {{ lastSearchMeta.limit }}</span>
-              <span v-if="lastSearchMeta.sortBy"> | Sorted by: {{ lastSearchMeta.sortBy }} ({{ lastSearchMeta.sortDirection }})</span>
+              <span v-if="lastSearchMeta.sortBy">
+                | Sorted by: {{ lastSearchMeta.sortBy }} ({{ lastSearchMeta.sortDirection }})
+              </span>
             </p>
           </div>
 
@@ -139,18 +87,20 @@
 </template>
 
 <script>
-import RecipePreviewList from "../components/RecipePreviewList.vue";
 import RecipePreview from "../components/RecipePreview.vue";
+import RecipePreviewList from "../components/RecipePreviewList.vue";
+import SearchForm from "@/components/SearchForm.vue";
 import store from "../store";
-import cuisineOptions from '../data/cuisineOptions.js';
-import dietOptions from '../data/dietOptions.js';
-import intoleranceOptions from '../data/intoleranceOptions.js';
+import cuisineOptions from "../data/cuisineOptions.js";
+import dietOptions from "../data/dietOptions.js";
+import intoleranceOptions from "../data/intoleranceOptions.js";
 
 export default {
   name: "SearchPage",
   components: {
-    RecipePreviewList,
-    RecipePreview
+    SearchForm,
+    RecipePreview,
+    RecipePreviewList
   },
   data() {
     return {
@@ -196,7 +146,18 @@ export default {
     }
   },
   methods: {
-    async searchRecipes() {
+    async searchRecipes(searchData) {
+      // אם הטופס שלח נתונים - נעדכן
+      if (searchData) {
+        this.query = searchData.query;
+        this.selectedCuisine = searchData.selectedCuisine;
+        this.selectedDiet = searchData.selectedDiet;
+        this.selectedIntolerance = searchData.selectedIntolerance;
+        this.limit = searchData.limit;
+        this.sortBy = searchData.sortBy;
+        this.sortDirection = searchData.sortDirection;
+      }
+
       if (!this.query) {
         alert("Please enter a recipe name to search.");
         return;
@@ -244,7 +205,7 @@ export default {
         const res = await this.axios.get(`${store.server_domain}/api/users/my-last-searches`);
         if (res.data && res.data.recipes) {
           this.lastSearches = res.data.recipes;
-          this.lastSearchMeta = res.data.searchMeta; // נשמור את פרטי החיפוש האחרון
+          this.lastSearchMeta = res.data.searchMeta;
         }
       } catch (err) {
         console.log("No last searches or failed to fetch.", err);

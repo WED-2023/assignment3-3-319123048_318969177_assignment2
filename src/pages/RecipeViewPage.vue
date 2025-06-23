@@ -132,17 +132,12 @@ export default {
     },
     async fetchSimilarRecipes() {
       try {
-        const mainIngredient =
-          this.recipe.ingredients?.[0]?.name || "recipe";
-        const params = {
-          query: mainIngredient,
-        };
-        const res = await this.axios.get(`${this.store.server_domain}/api/recipes`, {
-          params,
-          withCredentials: true,
-        });
+        const res = await this.axios.get(
+          `${this.store.server_domain}/api/recipes/${this.recipe.id}/similar`,
+          { withCredentials: true }
+        );
 
-        this.similarRecipes = res.data.results || [];
+        this.similarRecipes = res.data || [];
       } catch (err) {
         console.error("Failed to fetch similar recipes", err);
       }
