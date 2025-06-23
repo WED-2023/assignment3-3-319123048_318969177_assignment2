@@ -20,15 +20,15 @@
 
       <!-- First Name -->
       <div class="form-group">
-        <label for="firstName">First Name</label>
+        <label for="firstname">First Name</label>
         <input
-          id="firstName"
-          v-model="form.firstName"
-          @input="v$.form.firstName.$touch()"
-          :class="['form-control', validationState('firstName')]"
+          id="firstname"
+          v-model="form.firstname"
+          @input="v$.form.firstname.$touch()"
+          :class="['form-control', validationState('firstname')]"
         />
-        <template v-if="v$.form.firstName.$dirty && v$.form.firstName.$errors.length">
-          <small v-for="err in v$.form.firstName.$errors" :key="err.$uid" class="text-danger">
+        <template v-if="v$.form.firstname.$dirty && v$.form.firstname.$errors.length">
+          <small v-for="err in v$.form.firstname.$errors" :key="err.$uid" class="text-danger">
             {{ err.$message }}
           </small>
         </template>
@@ -36,15 +36,15 @@
 
       <!-- Last Name -->
       <div class="form-group">
-        <label for="lastName">Last Name</label>
+        <label for="lastname">Last Name</label>
         <input
-          id="lastName"
-          v-model="form.lastName"
-          @input="v$.form.lastName.$touch()"
-          :class="['form-control', validationState('lastName')]"
+          id="lastname"
+          v-model="form.lastname"
+          @input="v$.form.lastname.$touch()"
+          :class="['form-control', validationState('lastname')]"
         />
-        <template v-if="v$.form.lastName.$dirty && v$.form.lastName.$errors.length">
-          <small v-for="err in v$.form.lastName.$errors" :key="err.$uid" class="text-danger">
+        <template v-if="v$.form.lastname.$dirty && v$.form.lastname.$errors.length">
+          <small v-for="err in v$.form.lastname.$errors" :key="err.$uid" class="text-danger">
             {{ err.$message }}
           </small>
         </template>

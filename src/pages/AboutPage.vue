@@ -3,7 +3,7 @@
     <b-card>
       <h2 class="mb-3">About the Project</h2>
      <p>
-      Patch-Yak is a recipe website we built as part of our Web Development Environments course at Ben-Gurion University. It lets you search for recipes, save your favorites, and even add your own including special family recipes.
+      noa-yaki is a recipe website we built as part of our Web Development Environments course at Ben-Gurion University. It lets you search for recipes, save your favorites, and even add your own including special family recipes.
       The site is built with Vue.js on the front, Node.js and Express on the back, and uses a MySQL database to store everything.
       It’s easy to use, works smoothly, and helps bring all your favorite recipes into one place.
     </p>
