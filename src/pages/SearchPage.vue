@@ -1,227 +1,121 @@
 <template>
-  <b-container class="mt-4">
-    <h2 class="mb-4">Search Recipes</h2>
-
-    <!-- טופס חיפוש -->
-    <SearchForm
-      :query="query"
-      :selectedCuisine="selectedCuisine"
-      :selectedDiet="selectedDiet"
-      :selectedIntolerance="selectedIntolerance"
-      :limit="limit"
-      :sortBy="sortBy"
-      :sortDirection="sortDirection"
-      :cuisineOptions="cuisineOptions"
-      :dietOptions="dietOptions"
-      :intoleranceOptions="intoleranceOptions"
-      :limitOptions="limitOptions"
-      :sortByOptions="sortByOptions"
-      :sortDirectionOptions="sortDirectionOptions"
-      @submitSearch="searchRecipes"
-    />
-
-    <!-- תוצאות חיפוש -->
-    <div class="mt-5" v-if="searched">
-      <div v-if="recipes.length">
-        <b-row>
-          <b-col
-            v-for="r in sortedRecipes"
-            :key="r.id"
-            cols="12"
-            md="6"
-            lg="4"
-            class="mb-4 d-flex align-items-stretch"
-          >
-            <RecipePreview class="recipePreview" :recipe="r" />
-          </b-col>
-        </b-row>
-      </div>
-      <div v-else>
-        <p class="text-danger">No results found for your search criteria.</p>
-      </div>
-    </div>
-
-    <!-- חיפושים קודמים או מתכונים מומלצים -->
-    <div class="mt-5" v-else>
-      <div v-if="store.username">
-        <div v-if="lastSearches.length">
-          <h4 class="mb-3">Last Searched Recipes</h4>
-
-          <div class="mb-3 p-3 bg-light border rounded" v-if="lastSearchMeta">
-            <p class="mb-0">
-              <strong>Last search:</strong>
-              "{{ lastSearchMeta.query || 'N/A' }}"
-              <span v-if="lastSearchMeta.cuisine"> | Cuisine: {{ lastSearchMeta.cuisine }}</span>
-              <span v-if="lastSearchMeta.diet"> | Diet: {{ lastSearchMeta.diet }}</span>
-              <span v-if="lastSearchMeta.intolerance"> | Intolerance: {{ lastSearchMeta.intolerance }}</span>
-              <span v-if="lastSearchMeta.limit"> | Limit: {{ lastSearchMeta.limit }}</span>
-              <span v-if="lastSearchMeta.sortBy">
-                | Sorted by: {{ lastSearchMeta.sortBy }} ({{ lastSearchMeta.sortDirection }})
-              </span>
-            </p>
+  <b-container class="mt-5">
+    <!-- Search Form -->
+    <b-card class="p-4 shadow-sm mb-5">
+      <h3 class="fw-bold mb-4 text-center">Search Recipes</h3>
+      <form @submit.prevent="searchRecipes">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Search Term</label>
+            <input
+              v-model="query"
+              type="text"
+              class="form-control"
+              placeholder="e.g., pasta, soup..."
+            />
           </div>
 
-          <b-row>
-            <b-col
-              v-for="recipe in lastSearches"
-              :key="recipe.id"
-              cols="12"
-              md="6"
-              lg="4"
-              class="mb-4 d-flex align-items-stretch"
-            >
-              <RecipePreview :recipe="recipe" />
-            </b-col>
-          </b-row>
+          <div class="col-md-3">
+            <label class="form-label">Cuisine</label>
+            <input
+              v-model="cuisine"
+              type="text"
+              class="form-control"
+              placeholder="e.g., Italian"
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Diet</label>
+            <select v-model="diet" class="form-select">
+              <option value="">Any</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="gluten free">Gluten Free</option>
+            </select>
+          </div>
         </div>
-        <div v-else>
-          <p class="text-muted">You have no recent searches yet.</p>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-outline-primary fw-semibold">
+            🔍 Search
+          </button>
         </div>
-      </div>
-      <div v-else>
-        <RecipePreviewList title="Recommended Recipes" />
-      </div>
+      </form>
+    </b-card>
+
+    <!-- Search Results -->
+    <div v-if="recipes.length > 0">
+      <h4 class="mb-4 fw-semibold">Search Results:</h4>
+      <b-row>
+        <b-col
+          v-for="recipe in recipes"
+          :key="recipe.id"
+          cols="12"
+          md="6"
+          lg="4"
+          class="mb-4"
+        >
+          <div class="card h-100 shadow-sm">
+            <img
+              :src="recipe.image"
+              class="card-img-top"
+              :alt="recipe.title"
+              @error="handleImageError($event)"
+              style="object-fit: cover; height: 200px;"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ recipe.title }}</h5>
+              <router-link
+                class="btn btn-outline-secondary w-100"
+                :to="`/recipe/${recipe.id}`"
+              >
+                View Recipe
+              </router-link>
+            </div>
+          </div>
+        </b-col>
+      </b-row>
     </div>
 
+    <!-- No Results Message -->
+    <div v-else-if="searched" class="text-center text-muted mt-4">
+      <p>No recipes found. Try a different search term.</p>
+    </div>
   </b-container>
 </template>
 
-<script>
-import RecipePreview from "../components/RecipePreview.vue";
-import RecipePreviewList from "../components/RecipePreviewList.vue";
-import SearchForm from "@/components/SearchForm.vue";
-import store from "../store";
-import cuisineOptions from "../data/cuisineOptions.js";
-import dietOptions from "../data/dietOptions.js";
-import intoleranceOptions from "../data/intoleranceOptions.js";
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+import store from '@/store';
 
-export default {
-  name: "SearchPage",
-  components: {
-    SearchForm,
-    RecipePreview,
-    RecipePreviewList
-  },
-  data() {
-    return {
-      store,
-      query: "",
-      selectedCuisine: "",
-      selectedDiet: "",
-      selectedIntolerance: "",
-      limit: 5,
-      sortBy: "popularity",
-      sortDirection: "desc",
-      recipes: [],
-      searched: false,
-      lastSearches: [],
-      lastSearchMeta: null,
-      cuisineOptions,
-      dietOptions,
-      intoleranceOptions,
-      limitOptions: [
-        { value: 5, text: "5 results" },
-        { value: 10, text: "10 results" },
-        { value: 15, text: "15 results" }
-      ],
-      sortByOptions: [
-        { value: "popularity", text: "Popularity" },
-        { value: "readyInMinutes", text: "Preparation Time" }
-      ],
-      sortDirectionOptions: [
-        { value: "desc", text: "Descending" },
-        { value: "asc", text: "Ascending" }
-      ]
-    };
-  },
-  computed: {
-    sortedRecipes() {
-      const key = this.sortBy;
-      const dir = this.sortDirection;
-      return [...this.recipes].sort((a, b) => {
-        const valA = a[key] || 0;
-        const valB = b[key] || 0;
-        return dir === "asc" ? valA - valB : valB - valA;
-      });
-    }
-  },
-  methods: {
-    async searchRecipes(searchData) {
-      // אם הטופס שלח נתונים - נעדכן
-      if (searchData) {
-        this.query = searchData.query;
-        this.selectedCuisine = searchData.selectedCuisine;
-        this.selectedDiet = searchData.selectedDiet;
-        this.selectedIntolerance = searchData.selectedIntolerance;
-        this.limit = searchData.limit;
-        this.sortBy = searchData.sortBy;
-        this.sortDirection = searchData.sortDirection;
-      }
+const query = ref('');
+const cuisine = ref('');
+const diet = ref('');
+const recipes = ref([]);
+const searched = ref(false);
 
-      if (!this.query) {
-        alert("Please enter a recipe name to search.");
-        return;
-      }
+async function searchRecipes() {
+  searched.value = true;
 
-      const params = {
-        query: this.query,
-        cuisine: this.selectedCuisine,
-        diet: this.selectedDiet,
-        intolerances: this.selectedIntolerance,
-        limit: this.limit
-      };
+  try {
+    const res = await axios.get(`${store.server_domain}/api/recipes/search`, {
+      params: {
+        query: query.value,
+        cuisine: cuisine.value,
+        diet: diet.value,
+      },
+    });
 
-      try {
-        const res = await this.axios.get(`${store.server_domain}/api/recipes`, {
-          params,
-          withCredentials: true,
-        });
-        this.recipes = res.data;
-
-        if (store.username) {
-          await this.axios.post(`${store.server_domain}/api/users/my-last-searches`, {
-            query: this.query,
-            selectedCuisine: this.selectedCuisine,
-            selectedDiet: this.selectedDiet,
-            selectedIntolerance: this.selectedIntolerance,
-            limit_results: this.limit,
-            sortBy: this.sortBy,
-            sortDirection: this.sortDirection,
-            recipeIds: this.recipes.map(r => r.id),
-          }, {
-            withCredentials: true,
-          });
-        }
-      } catch (err) {
-        console.error("Search failed", err);
-        this.recipes = [];
-      } finally {
-        this.searched = true;
-      }
-    },
-
-    async loadLastSearches() {
-      try {
-        const res = await this.axios.get(`${store.server_domain}/api/users/my-last-searches`);
-        if (res.data && res.data.recipes) {
-          this.lastSearches = res.data.recipes;
-          this.lastSearchMeta = res.data.searchMeta;
-        }
-      } catch (err) {
-        console.log("No last searches or failed to fetch.", err);
-      }
-    }
-  },
-  mounted() {
-    if (store.username) {
-      this.loadLastSearches();
-    }
+    recipes.value = res.data || [];
+  } catch (err) {
+    console.error('Search error:', err);
+    recipes.value = [];
   }
-};
-</script>
-
-<style scoped>
-.recipePreview {
-  height: 100%;
 }
-</style>
+
+function handleImageError(event) {
+  event.target.src = require('@/assets/default_food.jpg');
+}
+</script>
