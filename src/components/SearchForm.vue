@@ -1,64 +1,124 @@
 <template>
-  <form @submit.prevent="onSearch" class="p-3 border rounded shadow-sm bg-white">
-    <div class="row g-3">
-      <!-- Query -->
-      <div class="col-md-6">
-        <label for="query" class="form-label">Search</label>
-        <input
-          id="query"
-          v-model="query"
-          type="text"
-          class="form-control"
-          placeholder="Search for recipes..."
-        />
-      </div>
+  <b-form @submit.prevent="emitSearch">
+    <!-- שורת חיפוש -->
+    <b-form-group label="Recipe name:" label-for="query">
+      <b-form-input
+        id="query"
+        v-model="localQuery"
+        placeholder="Search by recipe name..."
+      />
+    </b-form-group>
 
-      <!-- Cuisine -->
-      <div class="col-md-3">
-        <label for="cuisine" class="form-label">Cuisine</label>
-        <input
-          id="cuisine"
-          v-model="cuisine"
-          type="text"
-          class="form-control"
-          placeholder="e.g. Italian"
-        />
-      </div>
+    <!-- פילטרים -->
+    <b-row class="mb-3">
+      <b-col md="4">
+        <b-form-group label="Cuisine:" label-for="cuisine">
+          <b-form-select
+            id="cuisine"
+            v-model="localSelectedCuisine"
+            :options="cuisineOptions"
+          />
+        </b-form-group>
+      </b-col>
+      <b-col md="4">
+        <b-form-group label="Diet:" label-for="diet">
+          <b-form-select
+            id="diet"
+            v-model="localSelectedDiet"
+            :options="dietOptions"
+          />
+        </b-form-group>
+      </b-col>
+      <b-col md="4">
+        <b-form-group label="Intolerance:" label-for="intolerance">
+          <b-form-select
+            id="intolerance"
+            v-model="localSelectedIntolerance"
+            :options="intoleranceOptions"
+          />
+        </b-form-group>
+      </b-col>
+    </b-row>
 
-      <!-- Diet -->
-      <div class="col-md-3">
-        <label for="diet" class="form-label">Diet</label>
-        <select v-model="diet" class="form-select">
-          <option value="">Any</option>
-          <option value="vegetarian">Vegetarian</option>
-          <option value="vegan">Vegan</option>
-          <option value="gluten free">Gluten Free</option>
-        </select>
-      </div>
-    </div>
+    <!-- מיון -->
+    <b-row class="mb-3">
+      <b-col md="4">
+        <b-form-group label="Number of results:" label-for="limit">
+          <b-form-select
+            id="limit"
+            v-model="localLimit"
+            :options="limitOptions"
+          />
+        </b-form-group>
+      </b-col>
+      <b-col md="4">
+        <b-form-group label="Sort by:" label-for="sortBy">
+          <b-form-select
+            id="sortBy"
+            v-model="localSortBy"
+            :options="sortByOptions"
+          />
+        </b-form-group>
+      </b-col>
+      <b-col md="4">
+        <b-form-group label="Sort direction:" label-for="sortDirection">
+          <b-form-select
+            id="sortDirection"
+            v-model="localSortDirection"
+            :options="sortDirectionOptions"
+          />
+        </b-form-group>
+      </b-col>
+    </b-row>
 
-    <div class="d-grid mt-4">
-      <button type="submit" class="btn btn-outline-primary fw-semibold">
-        🔍 Search
-      </button>
-    </div>
-  </form>
+    <!-- כפתור -->
+    <b-button type="submit" variant="primary" block>
+      🔍 Search Recipes
+    </b-button>
+  </b-form>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-
-const emit = defineEmits(['search']);
-
-const query = ref('');
-const cuisine = ref('');
-const diet = ref('');
-
-function onSearch() {
-  emit('search', {
-    query: query.value,
-    cuisine: cuisine.value,
-    diet: diet.value,
-  });
-}
+<script>
+export default {
+  name: "SearchForm",
+  props: {
+    query: String,
+    selectedCuisine: String,
+    selectedDiet: String,
+    selectedIntolerance: String,
+    limit: Number,
+    sortBy: String,
+    sortDirection: String,
+    cuisineOptions: Array,
+    dietOptions: Array,
+    intoleranceOptions: Array,
+    limitOptions: Array,
+    sortByOptions: Array,
+    sortDirectionOptions: Array,
+  },
+  data() {
+    return {
+      localQuery: this.query,
+      localSelectedCuisine: this.selectedCuisine,
+      localSelectedDiet: this.selectedDiet,
+      localSelectedIntolerance: this.selectedIntolerance,
+      localLimit: this.limit,
+      localSortBy: this.sortBy,
+      localSortDirection: this.sortDirection,
+    };
+  },
+  methods: {
+    emitSearch() {
+      this.$emit("submitSearch", {
+        query: this.localQuery,
+        selectedCuisine: this.localSelectedCuisine,
+        selectedDiet: this.localSelectedDiet,
+        selectedIntolerance: this.localSelectedIntolerance,
+        limit: this.localLimit,
+        sortBy: this.localSortBy,
+        sortDirection: this.localSortDirection,
+      });
+    },
+  },
+};
 </script>

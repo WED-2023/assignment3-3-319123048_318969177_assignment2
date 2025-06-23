@@ -1,38 +1,54 @@
 <template>
-  <div>
-    <div v-if="recipes.length === 0" class="text-center text-muted">
-      <p>You haven’t watched any recipes yet.</p>
+  <div class="container">
+    <h3>Last Watched Recipes</h3>
+
+    <div v-if="recipes.length === 0">
+      <p>No recently watched recipes yet.</p>
     </div>
 
-    <b-row v-else>
-      <b-col
-        v-for="recipe in recipes"
-        :key="recipe.id"
-        cols="12"
-        md="6"
-        lg="4"
-        class="mb-4"
-      >
-        <RecipePreview :recipe="recipe" />
-      </b-col>
-    </b-row>
+    <div class="row" v-else>
+      <div class="col" v-for="r in recipes" :key="r.id">
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import RecipePreview from './RecipePreview.vue';
-import axios from 'axios';
-import store from '@/store';
+<script>
+import RecipePreview from "./RecipePreview.vue";
+import store from "../store";
 
-const recipes = ref([]);
-
-onMounted(async () => {
-  try {
-    const response = await axios.get(`${store.server_domain}/api/users/last-watched`);
-    recipes.value = response.data || [];
-  } catch (error) {
-    console.error('Error fetching last watched recipes:', error);
-  }
-});
+export default {
+  name: "LastWatchedRecipes",
+  components: {
+    RecipePreview,
+  },
+  data() {
+    return {
+      recipes: [],
+    };
+  },
+  mounted() {
+    this.loadLastWatchedRecipes();
+  },
+  methods: {
+    async loadLastWatchedRecipes() {
+      try {
+        const response = await this.axios.get(
+          store.server_domain + "/api/users/my-last-watched",
+          { withCredentials: true }
+        );
+        this.recipes = response.data;
+      } catch (error) {
+        console.error("Error loading last watched recipes:", error);
+      }
+    },
+  },
+};
 </script>
+
+<style scoped>
+.container {
+  min-height: 400px;
+}
+</style>
