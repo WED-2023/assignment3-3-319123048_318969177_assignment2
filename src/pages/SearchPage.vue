@@ -18,7 +18,13 @@
       :sortByOptions="sortByOptions"
       :sortDirectionOptions="sortDirectionOptions"
       @submitSearch="searchRecipes"
+      @updateSortBy="sortBy = $event"
+      @updateSortDirection="sortDirection = $event"
     />
+
+
+
+
 
     <!-- תוצאות חיפוש -->
     <div class="mt-5" v-if="searched">

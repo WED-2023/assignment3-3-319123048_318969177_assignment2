@@ -1,6 +1,6 @@
 <template>
   <b-form @submit.prevent="emitSearch">
-    <!-- שורת חיפוש -->
+    <!-- 🔍 שורת חיפוש -->
     <b-form-group label="Recipe name:" label-for="query">
       <b-form-input
         id="query"
@@ -9,9 +9,9 @@
       />
     </b-form-group>
 
-    <!-- פילטרים -->
+    <!-- 🧪 פילטרים -->
     <b-row class="mb-3">
-      <b-col md="4">
+      <b-col md="3">
         <b-form-group label="Cuisine:" label-for="cuisine">
           <b-form-select
             id="cuisine"
@@ -20,7 +20,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col md="4">
+      <b-col md="3">
         <b-form-group label="Diet:" label-for="diet">
           <b-form-select
             id="diet"
@@ -29,7 +29,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col md="4">
+      <b-col md="3">
         <b-form-group label="Intolerance:" label-for="intolerance">
           <b-form-select
             id="intolerance"
@@ -38,11 +38,7 @@
           />
         </b-form-group>
       </b-col>
-    </b-row>
-
-    <!-- מיון -->
-    <b-row class="mb-3">
-      <b-col md="4">
+      <b-col md="3">
         <b-form-group label="Number of results:" label-for="limit">
           <b-form-select
             id="limit"
@@ -51,30 +47,36 @@
           />
         </b-form-group>
       </b-col>
-      <b-col md="4">
+    </b-row>
+
+    <!-- ✅ כפתור חיפוש -->
+    <b-button type="submit" variant="primary" block>
+      🔍 Search Recipes
+    </b-button>
+
+    <!-- 🔀 מיון -->
+    <b-row class="mt-4">
+      <b-col md="6">
         <b-form-group label="Sort by:" label-for="sortBy">
           <b-form-select
             id="sortBy"
-            v-model="localSortBy"
+            :value="sortBy"
             :options="sortByOptions"
+            @change="$emit('updateSortBy', $event)"
           />
         </b-form-group>
       </b-col>
-      <b-col md="4">
+      <b-col md="6">
         <b-form-group label="Sort direction:" label-for="sortDirection">
           <b-form-select
             id="sortDirection"
-            v-model="localSortDirection"
+            :value="sortDirection"
             :options="sortDirectionOptions"
+            @change="$emit('updateSortDirection', $event)"
           />
         </b-form-group>
       </b-col>
     </b-row>
-
-    <!-- כפתור -->
-    <b-button type="submit" variant="primary" block>
-      🔍 Search Recipes
-    </b-button>
   </b-form>
 </template>
 
@@ -102,9 +104,7 @@ export default {
       localSelectedCuisine: this.selectedCuisine,
       localSelectedDiet: this.selectedDiet,
       localSelectedIntolerance: this.selectedIntolerance,
-      localLimit: this.limit,
-      localSortBy: this.sortBy,
-      localSortDirection: this.sortDirection,
+      localLimit: this.limit
     };
   },
   methods: {
@@ -115,10 +115,10 @@ export default {
         selectedDiet: this.localSelectedDiet,
         selectedIntolerance: this.localSelectedIntolerance,
         limit: this.localLimit,
-        sortBy: this.localSortBy,
-        sortDirection: this.localSortDirection,
+        sortBy: this.sortBy,
+        sortDirection: this.sortDirection,
       });
-    },
-  },
+    }
+  }
 };
 </script>
