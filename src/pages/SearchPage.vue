@@ -1,96 +1,110 @@
 <template>
-  <b-container class="mt-4">
-    <h2 class="mb-4">Search Recipes</h2>
-
-    <!-- טופס חיפוש -->
-    <SearchForm
-      :query="query"
-      :selectedCuisine="selectedCuisine"
-      :selectedDiet="selectedDiet"
-      :selectedIntolerance="selectedIntolerance"
-      :limit="limit"
-      :sortBy="sortBy"
-      :sortDirection="sortDirection"
-      :cuisineOptions="cuisineOptions"
-      :dietOptions="dietOptions"
-      :intoleranceOptions="intoleranceOptions"
-      :limitOptions="limitOptions"
-      :sortByOptions="sortByOptions"
-      :sortDirectionOptions="sortDirectionOptions"
-      @submitSearch="searchRecipes"
-      @updateSortBy="sortBy = $event"
-      @updateSortDirection="sortDirection = $event"
+  <div class="search-page-wrapper position-relative">
+    <!-- Background Image -->
+    <img
+      src="@/assets/search_cover.jpg"
+      alt="Search Background"
+      class="bg-img position-absolute w-100 h-100"
     />
 
+    <!-- Overlay -->
+    <div class="overlay position-absolute w-100 h-100"></div>
 
+    <!-- Main Content -->
+    <div class="content-container position-relative py-5">
+      <b-container>
+        <div class="search-card p-4 mb-5 rounded shadow">
+          <h2 class="mb-4">Search Recipes</h2>
 
+          <!-- טופס חיפוש -->
+          <SearchForm
+            :query="query"
+            :selectedCuisine="selectedCuisine"
+            :selectedDiet="selectedDiet"
+            :selectedIntolerance="selectedIntolerance"
+            :limit="limit"
+            :sortBy="sortBy"
+            :sortDirection="sortDirection"
+            :cuisineOptions="cuisineOptions"
+            :dietOptions="dietOptions"
+            :intoleranceOptions="intoleranceOptions"
+            :limitOptions="limitOptions"
+            :sortByOptions="sortByOptions"
+            :sortDirectionOptions="sortDirectionOptions"
+            @submitSearch="searchRecipes"
+            @updateSortBy="sortBy = $event"
+            @updateSortDirection="sortDirection = $event"
+          />
+        </div>
 
-
-    <!-- תוצאות חיפוש -->
-    <div class="mt-5" v-if="searched">
-      <div v-if="recipes.length">
-        <b-row>
-          <b-col
-            v-for="r in sortedRecipes"
-            :key="r.id"
-            cols="12"
-            md="6"
-            lg="4"
-            class="mb-4 d-flex align-items-stretch"
-          >
-            <RecipePreview class="recipePreview" :recipe="r" />
-          </b-col>
-        </b-row>
-      </div>
-      <div v-else>
-        <p class="text-danger">No results found for your search criteria.</p>
-      </div>
-    </div>
-
-    <!-- חיפושים קודמים או מתכונים מומלצים -->
-    <div class="mt-5" v-else>
-      <div v-if="store.username">
-        <div v-if="lastSearches.length">
-          <h4 class="mb-3">Last Searched Recipes</h4>
-
-          <div class="mb-3 p-3 bg-light border rounded" v-if="lastSearchMeta">
-            <p class="mb-0">
-              <strong>Last search:</strong>
-              "{{ lastSearchMeta.query || 'N/A' }}"
-              <span v-if="lastSearchMeta.cuisine"> | Cuisine: {{ lastSearchMeta.cuisine }}</span>
-              <span v-if="lastSearchMeta.diet"> | Diet: {{ lastSearchMeta.diet }}</span>
-              <span v-if="lastSearchMeta.intolerance"> | Intolerance: {{ lastSearchMeta.intolerance }}</span>
-              <span v-if="lastSearchMeta.limit"> | Limit: {{ lastSearchMeta.limit }}</span>
-              <span v-if="lastSearchMeta.sortBy">
-                | Sorted by: {{ lastSearchMeta.sortBy }} ({{ lastSearchMeta.sortDirection }})
-              </span>
-            </p>
+        <!-- תוצאות חיפוש -->
+        <div v-if="searched">
+          <div v-if="recipes.length">
+            <b-row>
+              <b-col
+                v-for="r in sortedRecipes"
+                :key="r.id"
+                cols="12"
+                md="6"
+                lg="4"
+                class="mb-4 d-flex align-items-stretch"
+              >
+                <RecipePreview class="recipePreview" :recipe="r" />
+              </b-col>
+            </b-row>
           </div>
-
-          <b-row>
-            <b-col
-              v-for="recipe in lastSearches"
-              :key="recipe.id"
-              cols="12"
-              md="6"
-              lg="4"
-              class="mb-4 d-flex align-items-stretch"
-            >
-              <RecipePreview :recipe="recipe" />
-            </b-col>
-          </b-row>
+          <div v-else>
+            <p class="text-danger">No results found for your search criteria.</p>
+          </div>
         </div>
+
+        <!-- חיפושים קודמים או מתכונים מומלצים -->
         <div v-else>
-          <p class="text-muted">You have no recent searches yet.</p>
-        </div>
-      </div>
-      <div v-else>
-        <RecipePreviewList title="Recommended Recipes" />
-      </div>
-    </div>
+          <div v-if="store.username">
+            <div v-if="lastSearches.length">
+              <h4 class="mb-3">Last Searched Recipes</h4>
 
-  </b-container>
+              <div class="mb-3 p-3 bg-light border rounded opacity-box" v-if="lastSearchMeta">
+                <p class="mb-0">
+                  <strong>Last search:</strong>
+                  "{{ lastSearchMeta.query || 'N/A' }}"
+                  <span v-if="lastSearchMeta.cuisine"> | Cuisine: {{ lastSearchMeta.cuisine }}</span>
+                  <span v-if="lastSearchMeta.diet"> | Diet: {{ lastSearchMeta.diet }}</span>
+                  <span v-if="lastSearchMeta.intolerance"> | Intolerance: {{ lastSearchMeta.intolerance }}</span>
+                  <span v-if="lastSearchMeta.limit"> | Limit: {{ lastSearchMeta.limit }}</span>
+                  <span v-if="lastSearchMeta.sortBy">
+                    | Sorted by: {{ lastSearchMeta.sortBy }} ({{ lastSearchMeta.sortDirection }})
+                  </span>
+                </p>
+              </div>
+
+              <b-row>
+                <b-col
+                  v-for="recipe in lastSearches"
+                  :key="recipe.id"
+                  cols="12"
+                  md="6"
+                  lg="4"
+                  class="mb-4 d-flex align-items-stretch"
+                >
+                  <RecipePreview :recipe="recipe" />
+                </b-col>
+              </b-row>
+            </div>
+            <div v-else>
+              <p class="text-muted">You have no recent searches yet.</p>
+            </div>
+          </div>
+          <div v-else>
+            <RecipePreviewList title="Recommended Recipes" />
+          </div>
+        </div>
+      </b-container>
+    </div>
+  </div>
 </template>
+
+
 
 <script>
 import RecipePreview from "../components/RecipePreview.vue";
@@ -100,7 +114,6 @@ import store from "../store";
 import cuisineOptions from "../data/cuisineOptions.js";
 import dietOptions from "../data/dietOptions.js";
 import intoleranceOptions from "../data/intoleranceOptions.js";
-
 export default {
   name: "SearchPage",
   components: {
@@ -227,7 +240,36 @@ export default {
 </script>
 
 <style scoped>
-.recipePreview {
-  height: 100%;
+.search-page-wrapper {
+  min-height: 100vh;
+  overflow: hidden;
 }
+
+.bg-img {
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.85);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1;
+}
+
+.content-container {
+  position: relative;
+  z-index: 2;
+}
+
+.search-card {
+  background-color: #ffffff;
+}
+
 </style>

@@ -307,18 +307,18 @@ export default {
   color: black; 
 }
 .register-btn {
-  background-color: #c9a7e6;
-  color: white;
-  border: 2px solid #0b000e; /* מסגרת ברורה */
+  background-color: #d7b0c6;
+  color: black;
+  border: 2px solid #d7b0c6;;
   transition: background-color 0.3s, border-color 0.3s;
 }
 .register-btn:hover {
-  background-color: #b48ed3;
-  border-color: #955ec4;
+  background-color: #d8a2c1;
+  border-color: #d8a2c1;
 }
 .register-btn:disabled {
   opacity: 0.6;
-  border: 2px solid #0b000e; /* מסגרת גם כשלא פעיל */
+  border: 2px solid rgb(167, 134, 152);
   cursor: not-allowed;
 }
 </style>

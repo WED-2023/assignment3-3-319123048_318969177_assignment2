@@ -182,18 +182,18 @@ export default {
   border-radius: 12px;
 }
 .login-btn {
-  background-color: #c9a7e6;
-  color: white;
-  border: 2px solid #a674d2;
+  background-color: #d7b0c6;
+  color: black;
+  border: 2px solid #d7b0c6;;
   transition: background-color 0.3s, border-color 0.3s;
 }
 .login-btn:hover {
-  background-color: #b48ed3;
-  border-color: #955ec4;
+  background-color: #d8a2c1;
+  border-color: #d8a2c1;
 }
 .login-btn:disabled {
   opacity: 0.6;
-  border: 2px solid #a674d2;
+  border: 2px solid #d7b0c6;
   cursor: not-allowed;
 }
 </style>
