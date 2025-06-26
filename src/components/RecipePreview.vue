@@ -45,7 +45,7 @@
 
 <script>
 import axios from "axios";
-import defaultImage from "@/assets/cooking.jpeg";
+import defaultImage from "@/assets/cooking.jpg";
 import store from "@/store";
 
 export default {

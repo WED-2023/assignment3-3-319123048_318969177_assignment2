@@ -1,97 +1,67 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <router-link class="navbar-link" :to="{ name: 'main' }">Recipes</router-link>
-        <!-- collapse button for mobile -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg pastel-navbar shadow-sm">
+      <div class="container-fluid d-flex justify-content-between align-items-center w-100 px-3">
 
-        <!--navbar -->
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'search' }">Search</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
-            </li>
+        <!-- Left side: navigation links -->
+        <div class="d-flex align-items-center gap-3">
+          <router-link class="navbar-link pastel-link" :to="{ name: 'main' }">Recipes</router-link>
+          <router-link class="nav-link pastel-link" :to="{ name: 'search' }">Search</router-link>
+          <router-link class="nav-link pastel-link" :to="{ name: 'about' }">About</router-link>
 
-            <!-- Guest -->
-            <template v-if="!store.username">
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
-              </li>
-            </template>
+          <!-- Guest -->
+          <template v-if="!store.username">
+            <router-link class="nav-link pastel-link" :to="{ name: 'login' }">Login</router-link>
+            <router-link class="nav-link pastel-link" :to="{ name: 'register' }">Register</router-link>
+          </template>
 
-            <!-- logged in user -->
-            <template v-else>
-              <!-- Personal -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="userDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Personal
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                  <li>
-                    <router-link class="dropdown-item" :to="{ name: 'favorites' }">My Favorite Recipes</router-link>
-                  </li>
-                  <li>
-                    <router-link class="dropdown-item" :to="{ name: 'myRecipes' }">My Recipes</router-link>
-                  </li>
-                  <li>
-                    <router-link class="dropdown-item" :to="{ name: 'familyRecipes' }">My Family Recipes</router-link>
-                  </li>
-                </ul>
-              </li>
+          <!-- Logged in -->
+          <template v-else>
+            <div class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle pastel-link"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Personal
+              </a>
+              <ul class="dropdown-menu">
+                <li><router-link class="dropdown-item" :to="{ name: 'favorites' }">My Favorites</router-link></li>
+                <li><router-link class="dropdown-item" :to="{ name: 'myRecipes' }">My Recipes</router-link></li>
+                <li><router-link class="dropdown-item" :to="{ name: 'familyRecipes' }">Family Recipes</router-link></li>
+              </ul>
+            </div>
 
-              <!-- Create Recipe -->
-              <li class="nav-item d-flex align-items-center">
-                <button
-                  class="btn btn-outline-primary ms-2"
-                  @click="showCreateModal = true"
-                >
-                  Create Recipe
-                </button>
-              </li>
-            </template>
-          </ul>
+            <button class="btn pastel-btn-outline ms-2" @click="showCreateModal = true">
+              Create Recipe
+            </button>
+          </template>
+        </div>
 
-          <div class="d-flex align-items-center gap-2">
-            <span class="navbar-text">
-              Hello, {{ store.username || "Guest" }}
-            </span>
+        <!-- Center: Logo -->
+        <div class="logo-center position-absolute start-50 translate-middle-x">
+          <img src="@/assets/logo.png" alt="Logo" class="nav-logo" />
+        </div>
 
-            <template v-if="store.username">
-              <button class="btn btn-primary" @click="logout">Logout</button>
-            </template>
-          </div>
+        <!-- Right: Hello + Logout -->
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-hello">Hello, {{ store.username || 'Guest' }}</span>
+          <button
+            v-if="store.username"
+            class="btn pastel-btn"
+            @click="logout"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </nav>
 
-    <!-- Main navbar content -->
-    <router-view class="container mt-4" />
+    <router-view />
 
-    <!-- Create Recipe Modal -->
     <b-modal
       id="createRecipeModal"
       title="Create New Recipe"
@@ -126,20 +96,71 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "@/scss/form-style.scss";
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  min-height: 100vh;
+<style scoped>
+.pastel-navbar {
+  background-color: #fffaf4;
+  height: 80px;
 }
 
-.router-link-exact-active {
-  font-weight: bold;
-  color: #0d6efd !important;
-  text-decoration: underline;
+.navbar-nav .nav-link,
+.pastel-link {
+  font-size: 1.2rem;
+}
+
+.nav-logo {
+  height: 80px; /* מוגדל מ-40 */
+  max-height: 80px;
+}
+
+.pastel-btn,
+.pastel-btn-outline {
+  font-size: 1rem;
+  padding: 0.5rem 1.2rem;
+}
+
+.logo-center {
+  z-index: 1;
+}
+
+@media (max-width: 991.98px) {
+  .pastel-navbar {
+    height: auto;
+  }
+  .nav-logo {
+    height: 50px;
+  }
+}
+
+.text-hello{
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #5e4b56 !important;
+}
+.navbar-link,
+.pastel-link {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.pastel-link {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #5e4b56 !important;
+  text-decoration: none;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+
+/* כשעוברים עם העכבר */
+.pastel-link:hover {
+  color: #a2758a !important;
+  text-decoration: none;
+  border-bottom: 2px solid #d7b0c6;
+}
+
+/* כשהעמוד פעיל */
+.router-link-exact-active.pastel-link {
+  color: #a2758a !important;
+  font-weight: 700;
+  border-bottom: 2px solid #d7b0c6;
 }
 </style>

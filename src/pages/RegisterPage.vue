@@ -1,139 +1,174 @@
 <template>
-  <div class="register-page container">
-    <h1 class="mb-4">Register</h1>
-    <form @submit.prevent="register">
-      <!-- Username -->
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input
-          id="username"
-          v-model="form.username"
-          @input="v$.form.username.$touch()"
-          :class="['form-control', validationState('username')]"
-        />
-        <template v-if="v$.form.username.$dirty && v$.form.username.$errors.length">
-          <small v-for="err in v$.form.username.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
-      </div>
+  <div class="register-page d-flex">
+    <!-- Form section -->
+    <div class="form-section d-flex align-items-center justify-content-center w-50 p-5">
+      <div class="card w-100 shadow p-4 rounded-4" style="max-width: 500px;">
+        <h2 class="text-center mb-4">Register</h2>
+        <form @submit.prevent="register">
+          <!-- Name -->
+          <div class="row">
+            <div class="col">
+              <div class="form-group mb-3">
+                <label for="firstname">First Name</label>
+                <input
+                  id="firstname"
+                  v-model="form.firstname"
+                  @input="v$.form.firstname.$touch()"
+                  :class="['form-control', validationState('firstname')]"
+                />
+                <template v-if="v$.form.firstname.$dirty && v$.form.firstname.$errors.length">
+                  <small v-for="err in v$.form.firstname.$errors" :key="err.$uid" class="text-danger">
+                    {{ err.$message }}
+                  </small>
+                </template>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group mb-3">
+                <label for="lastname">Last Name</label>
+                <input
+                  id="lastname"
+                  v-model="form.lastname"
+                  @input="v$.form.lastname.$touch()"
+                  :class="['form-control', validationState('lastname')]"
+                />
+                <template v-if="v$.form.lastname.$dirty && v$.form.lastname.$errors.length">
+                  <small v-for="err in v$.form.lastname.$errors" :key="err.$uid" class="text-danger">
+                    {{ err.$message }}
+                  </small>
+                </template>
+              </div>
+            </div>
+          </div>
 
-      <!-- First Name -->
-      <div class="form-group">
-        <label for="firstname">First Name</label>
-        <input
-          id="firstname"
-          v-model="form.firstname"
-          @input="v$.form.firstname.$touch()"
-          :class="['form-control', validationState('firstname')]"
-        />
-        <template v-if="v$.form.firstname.$dirty && v$.form.firstname.$errors.length">
-          <small v-for="err in v$.form.firstname.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
-      </div>
+          <!-- Email -->
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              v-model="form.email"
+              @input="v$.form.email.$touch()"
+              :class="['form-control', validationState('email')]"
+            />
+            <template v-if="v$.form.email.$dirty && v$.form.email.$errors.length">
+              <small v-for="err in v$.form.email.$errors" :key="err.$uid" class="text-danger">
+                {{ err.$message }}
+              </small>
+            </template>
+          </div>
 
-      <!-- Last Name -->
-      <div class="form-group">
-        <label for="lastname">Last Name</label>
-        <input
-          id="lastname"
-          v-model="form.lastname"
-          @input="v$.form.lastname.$touch()"
-          :class="['form-control', validationState('lastname')]"
-        />
-        <template v-if="v$.form.lastname.$dirty && v$.form.lastname.$errors.length">
-          <small v-for="err in v$.form.lastname.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
-      </div>
+          <!-- Country -->
+          <div class="form-group mb-3">
+            <label for="country">Country</label>
+            <select
+              id="country"
+              v-model="form.country"
+              @change="v$.form.country.$touch()"
+              :class="['form-control', validationState('country')]"
+            >
+              <option disabled value="">Select a country</option>
+              <option v-for="c in countries" :key="c" :value="c">{{ c }}</option>
+            </select>
+            <template v-if="v$.form.country.$dirty && v$.form.country.$errors.length">
+              <small v-for="err in v$.form.country.$errors" :key="err.$uid" class="text-danger">
+                {{ err.$message }}
+              </small>
+            </template>
+          </div>
 
-      <!-- Country -->
-      <div class="form-group">
-        <label for="country">Country</label>
-        <select
-          id="country"
-          v-model="form.country"
-          @change="v$.form.country.$touch()"
-          :class="['form-control', validationState('country')]"
-        >
-          <option disabled value="">Select a country</option>
-          <option v-for="c in countries" :key="c" :value="c">{{ c }}</option>
-        </select>
-        <template v-if="v$.form.country.$dirty && v$.form.country.$errors.length">
-          <small v-for="err in v$.form.country.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
-      </div>
+          <!-- Username -->
+          <div class="form-group mb-3">
+            <label for="username">Username</label>
+            <input
+              id="username"
+              v-model="form.username"
+              @input="v$.form.username.$touch()"
+              :class="['form-control', validationState('username')]"
+            />
+            <template v-if="v$.form.username.$dirty && v$.form.username.$errors.length">
+              <small v-for="err in v$.form.username.$errors" :key="err.$uid" class="text-danger">
+                {{ err.$message }}
+              </small>
+            </template>
+          </div>
 
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          v-model="form.email"
-          @input="v$.form.email.$touch()"
-          :class="['form-control', validationState('email')]"
-        />
-        <template v-if="v$.form.email.$dirty && v$.form.email.$errors.length">
-          <small v-for="err in v$.form.email.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
-      </div>
+          <!-- Passwords -->
+          <div class="row">
+            <div class="col">
+              <div class="form-group mb-3">
+                <label for="password">Password</label>
+                <input
+                  id="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  v-model="form.password"
+                  @input="v$.form.password.$touch()"
+                  :class="['form-control', validationState('password')]"
+                />
+                <div class="form-check small">
+                  <input type="checkbox" v-model="showPassword" class="form-check-input" id="showPass" />
+                  <label for="showPass" class="form-check-label">Show</label>
+                </div>
+                <template v-if="v$.form.password.$dirty && v$.form.password.$errors.length">
+                  <small v-for="err in v$.form.password.$errors" :key="err.$uid" class="text-danger">
+                    {{ err.$message }}
+                  </small>
+                </template>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group mb-3">
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                  id="confirmPassword"
+                  :type="showConfirmPassword ? 'text' : 'password'"
+                  v-model="form.confirmPassword"
+                  @input="v$.form.confirmPassword.$touch()"
+                  :class="['form-control', validationState('confirmPassword')]"
+                />
+                <div class="form-check small">
+                  <input type="checkbox" v-model="showConfirmPassword" class="form-check-input" id="showConfirm" />
+                  <label for="showConfirm" class="form-check-label">Show</label>
+                </div>
+                <template v-if="v$.form.confirmPassword.$dirty && v$.form.confirmPassword.$errors.length">
+                  <small v-for="err in v$.form.confirmPassword.$errors" :key="err.$uid" class="text-danger">
+                    {{ err.$message }}
+                  </small>
+                </template>
+              </div>
+            </div>
+          </div>
 
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          @input="v$.form.password.$touch()"
-          :class="['form-control', validationState('password')]"
-        />
-        <div>
-          <input type="checkbox" v-model="showPassword" /> Show password
+          <!-- Register button -->
+          <div class="d-grid">
+            <button type="submit" class="btn register-btn mt-2" :disabled="v$.form.$invalid">
+              Register
+            </button>
+          </div>
+
+          <!-- Login Prompt -->
+        <div class="mt-4 text-center">
+          <p> Have an account already?</p>
+          <router-link to="/login" class="btn register-btn">
+            Login
+          </router-link>
         </div>
-        <template v-if="v$.form.password.$dirty && v$.form.password.$errors.length">
-          <small v-for="err in v$.form.password.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
+        </form>
       </div>
+    </div>
 
-      <!-- Confirm Password -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-          id="confirmPassword"
-          :type="showConfirmPassword ? 'text' : 'password'"
-          v-model="form.confirmPassword"
-          @input="v$.form.confirmPassword.$touch()"
-          :class="['form-control', validationState('confirmPassword')]"
-        />
-        <div>
-          <input type="checkbox" v-model="showConfirmPassword" /> Show confirm password
-        </div>
-        <template v-if="v$.form.confirmPassword.$dirty && v$.form.confirmPassword.$errors.length">
-          <small v-for="err in v$.form.confirmPassword.$errors" :key="err.$uid" class="text-danger">
-            {{ err.$message }}
-          </small>
-        </template>
+    <!-- Image Section -->
+    <div class="image-section w-50 position-relative d-none d-md-block">
+      <img src="@/assets/register_cover.jpg" alt="Register Cover" class="w-100 h-100 object-fit-cover" />
+      <div class="welcome-text position-absolute text-black text-center">
+        <h1 class="display-4 fw-bold"> Welcome </h1>
+        <p class="lead"> Recipes Website </p>
       </div>
-
-      <button type="submit" class="btn btn-primary mt-3" :disabled="v$.form.$invalid">
-        Register
-      </button>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref, onMounted, computed  } from 'vue';
+import { reactive, ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import useVuelidate from '@vuelidate/core';
 import store from '../store';
@@ -173,15 +208,9 @@ export default {
           maxLength: helpers.withMessage("Maximum 8 characters", maxLength(8)),
           alpha: helpers.withMessage(" Letters only", alpha)
         },
-        firstname: {
-          required: helpers.withMessage("First name is required", required)
-        },
-        lastname: {
-          required: helpers.withMessage("Last name is required", required)
-        },
-        country: {
-          required: helpers.withMessage("Country is required", required)
-        },
+        firstname: { required: helpers.withMessage("First name is required", required) },
+        lastname: { required: helpers.withMessage("Last name is required", required) },
+        country: { required: helpers.withMessage("Country is required", required) },
         email: {
           required: helpers.withMessage("Email is required", required),
           email: helpers.withMessage(" Must be a valid email", email)
@@ -234,8 +263,7 @@ export default {
           router.push('/login');
         } catch (err) {
           const serverMessage = err.response?.data?.message || "Try again";
-
-          if (err.response?.status === 409 && serverMessage === "Username already exists") {  
+          if (err.response?.status === 409 && serverMessage === "Username already exists") {
             alert("Registration failed: Username already exists");
             form.username = "";
             v$.value.form.username.$reset();
@@ -263,7 +291,34 @@ export default {
 
 <style scoped>
 .register-page {
-  max-width: 600px;
-  margin: auto;
+  height: 100vh;
+  overflow: hidden;
+}
+.image-section {
+  position: relative;
+}
+.image-section img {
+  object-fit: cover;
+}
+.welcome-text {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: black; 
+}
+.register-btn {
+  background-color: #c9a7e6;
+  color: white;
+  border: 2px solid #0b000e; /* מסגרת ברורה */
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.register-btn:hover {
+  background-color: #b48ed3;
+  border-color: #955ec4;
+}
+.register-btn:disabled {
+  opacity: 0.6;
+  border: 2px solid #0b000e; /* מסגרת גם כשלא פעיל */
+  cursor: not-allowed;
 }
 </style>

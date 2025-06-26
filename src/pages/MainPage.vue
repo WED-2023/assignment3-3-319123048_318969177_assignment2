@@ -1,11 +1,11 @@
 <template>
-  <div class="container mt-4">
-    <div class="row">
+  <div class="main-wrapper pt-2 pb-4">
+    <div class="row px-5">
       <!-- Left Side: Random Recipes -->
       <div class="col-md-6 mb-4">
         <h3>Explore these recipes:</h3>
         <RecipePreviewList title="" ref="randomList" />
-        <button @click="refreshRandomRecipes" class="btn btn-primary mt-3">Get more recipes</button>
+        <button @click="refreshRandomRecipes" class="btn pastel-btn mt-3">Get more recipes</button>
       </div>
 
       <!-- Right Side: Last Watched or Login -->
@@ -55,3 +55,22 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.main-wrapper {
+  background-color: #fffaf4;
+  min-height: 100vh;
+}
+
+.btn.pastel-btn {
+  background-color: #d7b0c6;
+  color: black;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn.pastel-btn:hover {
+  background-color: #ae86a1;
+}
+
+</style>

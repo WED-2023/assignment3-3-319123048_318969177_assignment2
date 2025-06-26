@@ -70,7 +70,7 @@
 
 
 <script>
-import defaultImage from "@/assets/cooking.jpeg";
+import defaultImage from "@/assets/cooking.jpg";
 import RecipePreview from "@/components/RecipePreview.vue";
 
 export default {
