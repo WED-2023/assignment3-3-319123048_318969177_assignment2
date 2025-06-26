@@ -12,8 +12,8 @@
 
 
     <!-- Form Section (Right) -->
-    <div class="form-section d-flex align-items-center justify-content-center w-50 p-5">
-      <div class="card w-100 shadow p-4 rounded-4" style="max-width: 500px;">
+    <div class="form-section w-50 p-5 d-flex justify-content-center">
+      <div class="card w-100 login-card shadow p-4 rounded-4" style="max-width: 500px;">
         <h2 class="text-center mb-4">Login</h2>
         <form @submit.prevent="login">
           <!-- Username -->
@@ -163,8 +163,8 @@ export default {
   background-image: url('@/assets/login_cover.jpg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain; /* שינוי חשוב! */
-  background-color: #fff; /* צבע רקע אחיד אם יש שוליים */
+  background-size: contain; 
+  background-color: #fff; 
 }
 
 .image-wrapper {
@@ -178,7 +178,7 @@ export default {
   top: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(255, 255, 255, 0.7); /* רקע עדין מאחורי הטקסט */
+  background-color: rgba(255, 255, 255, 0.7); 
   border-radius: 12px;
 }
 .login-btn {
@@ -195,5 +195,8 @@ export default {
   opacity: 0.6;
   border: 2px solid #d7b0c6;
   cursor: not-allowed;
+}
+.login-card {
+  margin-top: 5px;; 
 }
 </style>

@@ -35,7 +35,7 @@
               </ul>
             </div>
 
-            <button class="btn pastel-btn-outline ms-2" @click="showCreateModal = true">
+            <button class="btn pastel-btn ms-2" @click="showCreateModal = true">
               Create Recipe
             </button>
           </template>
@@ -112,10 +112,14 @@ export default {
   max-height: 80px;
 }
 
-.pastel-btn,
-.pastel-btn-outline {
+.pastel-btn {
   font-size: 1rem;
   padding: 0.5rem 1.2rem;
+  border: #a2758a 2px solid;
+}
+.pastel-btn:hover {
+  background-color: #d7b0c6;
+  color: black;
 }
 
 .logo-center {

@@ -1,23 +1,38 @@
 <template>
-  <div class="container mt-4">
-    <h2 class="mb-3">👨‍👩‍👧‍👦 Family Recipes</h2>
+  <div class="family-page-wrapper position-relative">
+    <!-- 🌄 Background Image -->
+    <img
+      src="@/assets/myFamily_cover.jpg"
+      alt="Family Cover"
+      class="bg-img position-absolute w-100 h-100"
+    />
+    <!-- 🧊 Overlay -->
+    <div class="overlay position-absolute w-100 h-100"></div>
 
-    <!-- Static Family Recipes -->
-    <div class="mb-5">
-      <h4 class="mb-3">✨ Our Family Classics:</h4>
+    <!-- 🌟 תוכן -->
+    <div class="content-container position-relative py-5 px-3">
+      <div class="container rounded-4 p-4 pastel-bg shadow">
+        <h2 class="mb-4 text-center">👨‍👩‍👧‍👦 Family Recipes</h2>
+
+        <!-- Static Family Recipes -->
+        <div class="mb-5">
+          <h4 class="mb-3">✨ Our Family Classics:</h4>
           <FamilyOverviewRecipe :recipes="staticFamilyRecipes" />
         </div>
 
-    <!-- User's Family Recipes -->
-    <div>
-      <h4 class="mb-3">📖 Your Family Recipes:</h4>
+        <!-- User Family Recipes -->
+        <div>
+          <h4 class="mb-3">📖 Your Family Recipes:</h4>
+          <p v-if="loading">Loading your family recipes...</p>
+          <p v-else-if="userFamilyRecipes.length === 0" class="text-muted">
+            You don't have family recipes.
+          </p>
 
-      <p v-if="loading">Loading your family recipes...</p>
-      <p v-else-if="userFamilyRecipes.length === 0">You don't have family recipes.</p>
-
-      <div class="row" v-else>
-        <div class="col-md-4 mb-4" v-for="recipe in userFamilyRecipes" :key="recipe.id">
-          <RecipePreview :recipe="recipe" />
+          <div class="row gx-2 gy-3" v-else>
+            <div class="col-md-4" v-for="recipe in userFamilyRecipes" :key="recipe.id">
+              <RecipePreview :recipe="recipe" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +76,27 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  max-width: 960px;
+.family-page-wrapper {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.bg-img {
+  object-fit: cover;
+  z-index: 0;
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: 1;
+}
+
+.content-container {
+  z-index: 2;
+  position: relative;
+}
+
+.pastel-bg {
+  background-color: #fef6f8;
 }
 </style>

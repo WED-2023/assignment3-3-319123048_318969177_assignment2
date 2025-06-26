@@ -22,9 +22,9 @@
 
       <!-- Dietary Info -->
       <div class="dietary-info">
-        <span v-if="recipe.vegetarian" title="Vegetarian">🥬</span>
+        <span v-if="recipe.vegetarian" title="Vegetarian">🥦</span>
         <span v-if="recipe.vegan" title="Vegan">🌱</span>
-        <span v-if="recipe.glutenFree" title="Gluten Free">🚫🌾</span>
+        <span v-if="recipe.glutenFree" title="Gluten Free">🌾🛇</span>
       </div>
 
       <!-- Buttons -->
@@ -182,45 +182,94 @@ export default {
 </script>
 
 <style scoped>
-.recipe-image {
-  object-fit: cover;
-  height: 250px;
-  width: 100%;
-  display: block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  background-color: #fff7fa; /* צבע פסטלי עדין */
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
 }
 
+/* תמונת מתכון */
+.recipe-image {
+  object-fit: cover;
+  height: 220px;
+  width: 100%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+/* עטיפת תמונה עם אנימציה */
 .image-wrapper {
   position: relative;
   cursor: pointer;
 }
-
 .image-wrapper:hover .recipe-image {
   transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
 }
 
-/* Watched label – now black, clean, without background */
+/* תווית נצפה */
 .watched-tag {
   position: absolute;
   top: 8px;
   left: 8px;
-  color: black;
-  border: 1px solid black;
-  padding: 2px 8px;
-  border-radius: 5px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  z-index: 2;
-  background-color: transparent;
-  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #444;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
-/* Dietary info styling */
+/* כותרת */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #5a4a66;
+}
+
+/* טקסט זמן ולייקים */
+.card-text {
+  color: #7a6e86;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* אייקוני תזונה */
 .dietary-info {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin: 8px 0;
   font-size: 1.2rem;
 }
+
+/* כפתורי פעולה */
+.btn {
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+.btn-outline-primary {
+  border-color: #c9a4bc;
+  color: #c9a4bc;
+}
+.btn-outline-primary:hover {
+  background-color: #c9a4bc;
+  color: white;
+}
+.btn-outline-danger {
+  border-color: #e4a2a2;
+  color: #e4a2a2;
+}
+.btn-outline-danger:hover {
+  background-color: #e4a2a2;
+  color: white;
+}
+.btn-danger {
+  background-color: #e4a2a2;
+  border-color: #e4a2a2;
+}
+
 
 </style>
