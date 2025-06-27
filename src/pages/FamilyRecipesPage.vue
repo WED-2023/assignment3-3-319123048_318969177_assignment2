@@ -11,18 +11,18 @@
 
     <!-- 🌟 תוכן -->
     <div class="content-container position-relative py-5 px-3">
-      <div class="container rounded-4 p-4 pastel-bg shadow">
+
         <h2 class="mb-4 text-center">👨‍👩‍👧‍👦 Family Recipes</h2>
 
         <!-- Static Family Recipes -->
         <div class="mb-5">
-          <h4 class="mb-3">✨ Our Family Classics:</h4>
+          <h4 class="mb-3 text-center">✨ Our Family Classics:</h4>
           <FamilyOverviewRecipe :recipes="staticFamilyRecipes" />
         </div>
 
         <!-- User Family Recipes -->
         <div>
-          <h4 class="mb-3">📖 Your Family Recipes:</h4>
+          <h4 class="mb-3 text-center">📖 Your Family Recipes:</h4>
           <p v-if="loading">Loading your family recipes...</p>
           <p v-else-if="userFamilyRecipes.length === 0" class="text-muted">
             You don't have family recipes.
@@ -36,7 +36,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

@@ -220,3 +220,74 @@ const submitRecipe = async () => {
   }
 };
 </script>
+
+<style scoped>
+
+form {
+  background-color: #fff7fa;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* שדות טופס */
+.form-control {
+  border-radius: 1rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #deb8c4;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #d48ea9;
+  box-shadow: 0 0 0 0.2rem rgba(212, 142, 169, 0.2);
+}
+
+/* שדות שגויים */
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.is-valid {
+  border-color: #198754 !important;
+}
+
+/* תוויות */
+label {
+  font-weight: 500;
+  color: #333;
+}
+
+/* כפתורים */
+button.btn {
+  border-radius: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+/* כפתורי הוספה */
+button.btn-outline-secondary {
+  color: #d48ea9;
+  border-color: #d48ea9;
+}
+button.btn-outline-secondary:hover {
+  background-color: #f8e6ec;
+  border-color: #d48ea9;
+}
+
+/* כפתור שמירה */
+button.btn-primary {
+  background-color: #d48ea9;
+  border-color: #d48ea9;
+}
+button.btn-primary:hover {
+  background-color: #c77495;
+  border-color: #c77495;
+}
+
+/* כפתור מחיקה */
+button.btn-outline-danger {
+  border-radius: 50%;
+  padding: 0.25rem 0.55rem;
+}
+</style>
