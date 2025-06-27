@@ -71,7 +71,8 @@ Build for production:
 Lint and fix files:
     `npm run lint`
 
-## 📦 File Structure (Simplified)
+## 📦 Project directories structure
+```
 .
 ├── src/
 │   ├── assets/             # Static assets (images, background covers)
@@ -85,5 +86,5 @@ Lint and fix files:
 ├── public/
 ├── package.json            # Project metadata & dependencies
 └── README.md               # Project documentation 
-
+```
 
