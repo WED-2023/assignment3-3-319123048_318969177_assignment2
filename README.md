@@ -61,7 +61,7 @@ You can run the app against:
 
 
 ## 🛠️ Project Setup
-
+```
 Install dependencies:
     `npm install`
 Run development server:
@@ -70,16 +70,34 @@ Build for production:
     `npm run build`
 Lint and fix files:
     `npm run lint`
+```
 
-## 📦 Project directories structure
+## 📦 Project structure
 ```
 .
 ├── src/
-│   ├── assets/             # Static assets (images, background covers)
-│   ├── components/         # Reusable Vue components
-│   ├── data/               # Local data files (JS)
-│   ├── pages/              # Page-level components
+│   ├── assets/                     # Static assets (images, background covers)
+│   ├── components/                 # Reusable Vue components
+│   │   └── CreateRecipeForm        
+│   │   └── FamilyOverviewRecipe    # To show Our family recipe from data directory
+│   │   └── LastWatchedRecipes      
+│   │   └── RecipePreview           # To show preview of a recipe
+│   │   └── RecipePreviewList       # To show 3 random recipes
+│   │   └── SearchForm              
+│   ├── data/                       # Local data files (JS)
+│   ├── pages/                      # Page-level components
+│   │   └── AboutPage               # About the project 
+│   │   └── FamilyRecipesPage       
+│   │   └── FavoriteRecipesPage      
+│   │   └── LoginPage
+│   │   └── MainPage                # The main page of the app
+│   │   └── MyRecipePage        
+│   │   └── NotFoundPage            # For error in the routing/ URL
+│   │   └── PecipeViewPage          # Recipe page
+│   │   └── RegisterPage
+│   │   └── SearchPage
 │   ├── router/             # Vue Router setup and routes
+│   ├── scss/
 │   ├── store.js            # store global state
 │   ├── App.vue             # Main app shell component
 │   └── main.js             # App initialization (Vue, router, store)
