@@ -1,6 +1,6 @@
 <template>
   <div class="register-page d-flex">
-    <!-- Form section -->
+    
     <div class="form-section d-flex align-items-center justify-content-center w-50 p-5">
       <div class="card w-100 shadow p-4 rounded-4" style="max-width: 500px;">
         <h2 class="text-center mb-4">Register</h2>
@@ -145,7 +145,7 @@
             </button>
           </div>
 
-          <!-- Login Prompt -->
+        
         <div class="mt-4 text-center">
           <p> Have an account already?</p>
           <router-link to="/login" class="btn register-btn">
@@ -156,7 +156,7 @@
       </div>
     </div>
 
-    <!-- Image Section -->
+    
     <div class="image-section w-50 position-relative d-none d-md-block">
       <img src="@/assets/register_cover.jpg" alt="Register Cover" class="w-100 h-100 object-fit-cover" />
       <div class="welcome-text position-absolute text-black text-center">

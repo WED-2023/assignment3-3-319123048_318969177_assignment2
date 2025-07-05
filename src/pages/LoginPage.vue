@@ -1,6 +1,6 @@
 <template>
   <div class="login-page d-flex">
-    <!-- Image Section (Left) -->
+    
     <div class="image-section w-50 d-none d-md-block">
       <div class="image-wrapper">
         <div class="welcome-text text-black text-center px-3 py-2">
@@ -11,12 +11,12 @@
     </div>
 
 
-    <!-- Form Section (Right) -->
+   
     <div class="form-section w-50 p-5 d-flex justify-content-center">
       <div class="card w-100 login-card shadow p-4 rounded-4" style="max-width: 500px;">
         <h2 class="text-center mb-4">Login</h2>
         <form @submit.prevent="login">
-          <!-- Username -->
+          
           <div class="form-group mb-3">
             <label for="username">Username</label>
             <input
@@ -32,7 +32,7 @@
             </template>
           </div>
 
-          <!-- Password -->
+          
           <div class="form-group mb-3">
             <label for="password">Password</label>
             <input
@@ -53,12 +53,12 @@
             </template>
           </div>
 
-          <!-- Error Message -->
+          
           <div v-if="loginError" class="alert alert-danger mt-2">
             One or more fields are incorrect. Please try again.
           </div>
 
-          <!-- Login Button -->
+          
           <div class="d-grid">
             <button type="submit" class="btn login-btn mt-2" :disabled="v$.form.$invalid">
               Login
@@ -66,7 +66,7 @@
           </div>
         </form>
 
-        <!-- Register Prompt -->
+        
         <div class="mt-4 text-center">
           <p>Don't have an account yet?</p>
           <router-link to="/register" class="btn login-btn">

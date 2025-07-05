@@ -1,6 +1,6 @@
 <template>
   <div class="recipes-page-wrapper position-relative py-5">
-    <div class="overlay position-absolute w-100 h-100"></div>
+    <!-- <div class="overlay position-absolute w-100 h-100"></div> -->
 
     <b-container class="position-relative z-1">
       <h2 class="text-center mb-4 pastel-title">{{ title }}</h2>
@@ -82,9 +82,6 @@ export default {
   background-size: cover;
   background-position: center;
   overflow: hidden;
-}
-
-.overlay {
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 0;
 }

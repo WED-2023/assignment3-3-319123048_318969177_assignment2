@@ -1,26 +1,26 @@
 <template>
   <div class="family-page-wrapper position-relative">
-    <!-- 🌄 Background Image -->
+  
     <img
       src="@/assets/myFamily_cover.jpg"
       alt="Family Cover"
       class="bg-img position-absolute w-100 h-100"
     />
-    <!-- 🧊 Overlay -->
+    
     <div class="overlay position-absolute w-100 h-100"></div>
 
-    <!-- 🌟 תוכן -->
+    
     <div class="content-container position-relative py-5 px-3">
 
         <h2 class="mb-4 text-center">👨‍👩‍👧‍👦 Family Recipes</h2>
 
-        <!-- Static Family Recipes -->
+        
         <div class="mb-5">
           <h4 class="mb-3 text-center">✨ Our Family Classics:</h4>
           <FamilyOverviewRecipe :recipes="staticFamilyRecipes" />
         </div>
 
-        <!-- User Family Recipes -->
+        
         <div>
           <h4 class="mb-3 text-center">📖 Your Family Recipes:</h4>
           <p v-if="loading">Loading your family recipes...</p>

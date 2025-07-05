@@ -1,6 +1,6 @@
 <template>
   <b-form @submit.prevent="emitSearch" class="form-card p-4 rounded shadow-sm">
-    <!-- 🔍 שורת חיפוש -->
+
     <b-form-group label="Recipe name:" label-for="query">
       <b-form-input
         id="query"
@@ -10,7 +10,7 @@
       />
     </b-form-group>
 
-    <!-- 🧪 פילטרים -->
+  
     <b-row class="mb-3">
       <b-col md="3">
         <b-form-group label="Cuisine:" label-for="cuisine">
@@ -54,7 +54,7 @@
       </b-col>
     </b-row>
 
-    <!-- ✅ כפתור חיפוש -->
+    
     <b-button type="submit" variant="light" class="pastel-button w-100 mb-4">
       🔍 Search Recipes
     </b-button>

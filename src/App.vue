@@ -5,7 +5,7 @@
 
         <!-- Left side: navigation links -->
         <div class="d-flex align-items-center gap-3">
-          <router-link class="navbar-link pastel-link" :to="{ name: 'main' }">Recipes</router-link>
+          <router-link class="navbar-link pastel-link" :to="{ name: 'main' }">Home</router-link>
           <router-link class="nav-link pastel-link" :to="{ name: 'search' }">Search</router-link>
           <router-link class="nav-link pastel-link" :to="{ name: 'about' }">About</router-link>
 
@@ -108,7 +108,7 @@ export default {
 }
 
 .nav-logo {
-  height: 80px; /* מוגדל מ-40 */
+  height: 80px;
   max-height: 80px;
 }
 
@@ -154,14 +154,13 @@ export default {
   transition: color 0.3s, border-bottom 0.3s;
 }
 
-/* כשעוברים עם העכבר */
+
 .pastel-link:hover {
   color: #a2758a !important;
   text-decoration: none;
   border-bottom: 2px solid #d7b0c6;
 }
 
-/* כשהעמוד פעיל */
 .router-link-exact-active.pastel-link {
   color: #a2758a !important;
   font-weight: 700;

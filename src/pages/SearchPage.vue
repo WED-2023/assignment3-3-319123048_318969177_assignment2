@@ -1,22 +1,22 @@
 <template>
   <div class="search-page-wrapper position-relative">
-    <!-- Background Image -->
+    
     <img
       src="@/assets/search_cover.jpg"
       alt="Search Background"
       class="bg-img position-absolute w-100 h-100"
     />
 
-    <!-- Overlay -->
+    
     <div class="overlay position-absolute w-100 h-100"></div>
 
-    <!-- Main Content -->
+    
     <div class="content-container position-relative py-5">
       <b-container>
         <div class="search-card p-4 mb-5 rounded shadow">
           <h2 class="mb-4">Search Recipes</h2>
 
-          <!-- טופס חיפוש -->
+          
           <SearchForm
             :query="query"
             :selectedCuisine="selectedCuisine"
@@ -37,7 +37,7 @@
           />
         </div>
 
-        <!-- תוצאות חיפוש -->
+        
         <div v-if="searched">
           <div v-if="recipes.length">
             <b-row>
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <!-- חיפושים קודמים או מתכונים מומלצים -->
+        
         <div v-else>
           <div v-if="store.username">
             <div v-if="lastSearches.length">
@@ -166,8 +166,7 @@ export default {
   },
   methods: {
     async searchRecipes(searchData) {
-      // אם הטופס שלח נתונים - נעדכן
-      if (searchData) {
+        if (searchData) {
         this.query = searchData.query;
         this.selectedCuisine = searchData.selectedCuisine;
         this.selectedDiet = searchData.selectedDiet;

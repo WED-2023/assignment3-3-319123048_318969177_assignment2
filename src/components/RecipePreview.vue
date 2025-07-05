@@ -186,14 +186,14 @@ export default {
   border: none;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-  background-color: #fff7fa; /* צבע פסטלי עדין */
+  background-color: #fff7fa; 
   transition: transform 0.2s;
 }
 .card:hover {
   transform: translateY(-4px);
 }
 
-/* תמונת מתכון */
+
 .recipe-image {
   object-fit: cover;
   height: 220px;
@@ -202,7 +202,6 @@ export default {
   border-top-right-radius: 16px;
 }
 
-/* עטיפת תמונה עם אנימציה */
 .image-wrapper {
   position: relative;
   cursor: pointer;
@@ -212,7 +211,6 @@ export default {
   transition: transform 0.3s;
 }
 
-/* תווית נצפה */
 .watched-tag {
   position: absolute;
   top: 8px;
@@ -225,27 +223,23 @@ export default {
   font-weight: bold;
 }
 
-/* כותרת */
 .card-title {
   font-size: 1.1rem;
   font-weight: bold;
   color: #5a4a66;
 }
 
-/* טקסט זמן ולייקים */
 .card-text {
   color: #7a6e86;
   font-size: 0.9rem;
   margin: 0;
 }
 
-/* אייקוני תזונה */
 .dietary-info {
   margin: 8px 0;
   font-size: 1.2rem;
 }
 
-/* כפתורי פעולה */
 .btn {
   border-radius: 20px;
   font-size: 0.9rem;

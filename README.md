@@ -16,17 +16,17 @@ The UI is designed with a pastel aesthetic using images to match the colors.
 
 ## 🎯 Key Features
 
-- 🔐 User authentication: register, login, logout
-- 🔎 Recipe search (with cuisine, diet, and intolerance filters)
-- 📊 Sort search results by preparation time or popularity
-- 💡 Live indicators: viewed and favorited
-- 🧾 Detailed recipe view including ingredients & instructions
-- 🧡 Favorite any recipe (API or user-generated)
-- ✍️ Create personal and family recipes with a clean modal form
-- 📜 Family recipe section with our family recipes and user-submitted
-- 📂 Personal area with saved, created, and family recipes
-- 🎥 Polished and responsive design with BootstrapVue & transitions
-- 🍪 Session-based login using HTTP-only cookies
+-  User authentication: register, login, logout
+-  Recipe search (with cuisine, diet, and intolerance filters)
+-  Sort search results by preparation time or popularity
+-  Live indicators: viewed and favorited
+-  Detailed recipe view including ingredients & instructions
+-  Favorite any recipe (API or user-generated)
+-  Create personal and family recipes with a clean modal form
+-  Family recipe section with our family recipes and user-submitted
+-  Personal area with saved, created, and family recipes
+-  Polished and responsive design with BootstrapVue & transitions
+-  Session-based login using HTTP-only cookies
 
 ## 🔗 Backend Integration
 
@@ -54,8 +54,8 @@ You can run the app against:
 
 - Adapts dynamically based on login status
 - User dropdown with:
-  - ⭐ My Favorites
-  - 🧾 My Recipes
+  -  My Favorites
+  -  My Recipes
   - 👨‍👩‍👧‍👦 My Family Recipes
 - 📝 Create Recipe button opens modal form
 
