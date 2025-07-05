@@ -2,19 +2,19 @@
 
 Client-side implementation for the full-stack project **"Grandma's Recipes and More"**, developed as part of the Web Development Environments course.
 
-## 👥 Developers
+**Submitters**:
 
 - **Noa Patchornik** – 319123048  
 - **Yaki Naftali** – 318969177
 
-## 📋 Overview
+## Overview
 
 This Vue.js 3 + BootstrapVue application serves as the frontend of a recipe management platform.  
 It allows users to **search**, **view**, **save**, and **create** recipes – including personal and family recipes – while communicating with an Express.js + MySQL backend.
 
 The UI is designed with a pastel aesthetic using images to match the colors.
 
-## 🎯 Key Features
+## Key Features
 
 -  User authentication: register, login, logout
 -  Recipe search (with cuisine, diet, and intolerance filters)
