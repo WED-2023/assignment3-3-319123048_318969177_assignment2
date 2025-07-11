@@ -49,7 +49,7 @@
                 lg="4"
                 class="mb-4 d-flex align-items-stretch"
               >
-                <RecipePreview class="recipePreview" :recipe="r" />
+                <RecipePreview class="recipePreview" :recipe="r" @like-updated="updatePopularity" />
               </b-col>
             </b-row>
           </div>
@@ -87,7 +87,7 @@
                   lg="4"
                   class="mb-4 d-flex align-items-stretch"
                 >
-                  <RecipePreview :recipe="recipe" />
+                  <RecipePreview :recipe="recipe"/>
                 </b-col>
               </b-row>
             </div>
@@ -228,7 +228,15 @@ export default {
       } catch (err) {
         console.log("No last searches or failed to fetch.", err);
       }
-    }
+    },
+      updatePopularity({ id, newPopularity }) {
+      const recipe = this.recipes.find(r => r.id === id);
+      if (recipe) {
+        recipe.popularity = newPopularity;
+        console.log(`🔁 Updated recipe ${id} popularity to:`, newPopularity);
+        console.log("📋 Full recipes list after update:", this.recipes);
+      }
+    },
   },
   mounted() {
     if (store.username) {

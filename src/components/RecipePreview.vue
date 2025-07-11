@@ -103,6 +103,10 @@ export default {
           { withCredentials: true }
         );
         this.likes = res.data.popularity;
+        this.$emit("like-updated", {
+          id: this.recipe.id,
+          newPopularity: res.data.popularity,
+        });
       } catch (err) {
         console.error("Like failed:", err);
         alert("Failed to like recipe.");

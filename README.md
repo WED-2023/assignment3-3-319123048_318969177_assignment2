@@ -28,7 +28,7 @@ The UI is designed with a pastel aesthetic using images to match the colors.
 -  Polished and responsive design with BootstrapVue & transitions
 -  Session-based login using HTTP-only cookies
 
-## 🔗 Backend Integration
+## Backend Integration
 
 The frontend uses `axios` to send HTTP requests to the backend server.  
 You can run the app against:
@@ -38,7 +38,7 @@ You can run the app against:
 
 > Ensure the backend is up and running before launching the frontend.
 
-## 🧪 Pages & Navigation
+## Pages & Navigation
 
 ### Main Pages
 
@@ -57,10 +57,10 @@ You can run the app against:
   -  My Favorites
   -  My Recipes
   - 👨‍👩‍👧‍👦 My Family Recipes
-- 📝 Create Recipe button opens modal form
+- Create Recipe button opens modal form
 
 
-## 🛠️ Project Setup
+## Project Setup
 ```
 Install dependencies:
     `npm install`
@@ -72,7 +72,7 @@ Lint and fix files:
     `npm run lint`
 ```
 
-## 📦 Project structure
+## Project structure
 ```
 .
 ├── src/
